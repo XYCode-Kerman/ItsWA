@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "itswa"
+version = "0.0.1"
+description = "一个Linux下的竞赛代码评测系统，基于Python实现，由Lrun提供安全保证。自带一个简单的OJ供提交代码。"
+authors = ["XYCode Kerman <xycode-xyc@outlook.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.10"
+rich = "^13.7.1"
+pydantic = "^2.6.4"
+
+
+[[tool.poetry.source]]
+name = "mirrors"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple/"
+priority = "primary"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
