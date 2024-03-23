@@ -1,8 +1,10 @@
 \documentclass[UTF8]{ctexart}
+\usepackage[scale=0.8]{geometry}
+\usepackage{ulem, paralist}
 
-\newcommand{\itswa}{\textbf{ItsWA}}
+\newcommand{\itswa}{ItsWA}
 
-\title{\itswa 用户手册}
+\title{\textbf{\itswa 用户手册}}
 \author{XYCode}
 \date{编译日期：\today}
 
@@ -11,5 +13,60 @@
 
     \tableofcontents
 
+    \section*{关于本文}
+        本文档是Github项目 \itswa 的用户手册。
+
+        \itswa 是一个基于Python搭建，使用Lrun提供安全运行时的Linux下的竞赛代码评测系统。
+    
     \section{基本架构}
+        本项目主要由三部分组成。
+
+        \subsection{管理器 Manager（WIP）}
+            管理器用于提供一系列TUI、GUI供用户调用，以实现对比赛和评测的管理。
+
+        \subsection{评测器 Judge}
+            评测器用于评测提交者的代码，评测器支持使用多线程评测，以实现大规模快速评测。
+
+            本项目的评测器在选手代码编译前会对代码中的\textbf{危险系统调用}进行过滤，并且使用了Lrun作为\textbf{安全运行时}，实现了在\textbf{syscall}级的安全防护。
+
+        \subsection{在线评测系统 Online Judge（WIP）}
+            本项目自带一个在线评测系统，选手可直接在该平台内提交自己的代码并获得即时评测结果。由于本项目的评测器存在被卡的可能性，因此\textbf{本项目自带的OJ \uline{不得被用于搭建OJ平台}}，我们仅推荐将其作为校级、市级等小型非正式比赛的一个提交通道。
+    
+    \section{系统要求}
+        注：\itswa 的开发环境为 ArchWSL，如果您在其他平台上遇到了问题，请及时通过Issue向我们报告。
+
+        \subsection{操作系统及软件运行时}
+            操作系统：Linux 任意发行版，正式评测请使用\textbf{NOI Linux}。
+
+            软件运行时：Python $\geq$ 3.10
+
+        \subsection{编译器}
+            \begin{tabular}{|c|c|}
+                \hline
+                \textbf{语言} & \textbf{命令（确保其可通过Shell调用）} \\
+                \hline
+                对于C++ & g++ (x86\_64-pc-linux-gnu) \\
+                \hline
+                对于C & gcc \space \space (x86\_64-pc-linux-gnu) \\
+                \hline
+            \end{tabular}
+
+        \subsection{安全运行时}
+            libseccomp = 2.x。
+
+            Linux $\ge 2.6.26$ 最低，$\ge 3.12$ 推荐。
+
+            Lrun 最新版本。
+        
+        \subsection{NOI Linux}
+            您可以只需在NOI Linux上安装\textbf{安全运行时}，即可使用本软件。
+    
+    \section{比赛配置文件 Contest Config File}
+        比赛配置文件(Contest Config File)简称CCF\footnote{你知道为什么这个文件不叫作 Contest Profile。}，是存在于比赛目录下的一个 Json 配置文件。
+
+        \itswa 使用Pydantic来读取和解析CCF，\textbf{如果您在使用过程中出现了有关 Pydantic 的报错，那么\uline{很有可能是CCF的格式不正确}。}
+        
+        一些无法使用 Json 存储的数据结构被称作 Binary Config File，简称 BCF，它们将会被保存在比赛目录下的 bcf/ 目录。
+
+        我们非常\textbf{不推荐}您手动编辑CCF，因为这可能导致错误，您应当使用 Manager 来编辑它们。如果您希望手动编辑CCF，请查看 \itswa 的CCF解析器中的定义\footnote{基于Pydantic定义的数据结构类型十分直观，因此我们认为\itswa CCF 解析器的中的定义应当成为 CCF 的事实标准。}后再编辑。
 \end{document}
