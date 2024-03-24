@@ -62,5 +62,5 @@ def simple_runtime(executeable_file: pathlib.Path, input_content: str, input_typ
                 output_file = file
 
         if output_file is None:
-            return Status.RuntimeError
+            return Status.RuntimeError  # pragma: no cover
         return output_file.read_text(encoding='utf-8')

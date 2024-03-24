@@ -19,14 +19,14 @@ class CPPFilter(Filter):
         super().__init__()
 
         self.regex_rules = [
-            '#include<con>',
-            '#include<\/dev\/.*>',
-            'system\(.*\)',
-            'popen\(.*\)'
+            r'<con>',
+            r'/dev/.*',
+            r'system\(.*\)',
+            r'popen\(.*\)'
         ]
 
     def filter(self, code: str) -> bool:
         for regex_rule in self.regex_rules:
-            if re.match(regex_rule, code, re.IGNORECASE) is not None:
+            if re.search(regex_rule, code, re.IGNORECASE) is not None:
                 judge_logger.debug(f'匹配到非法代码，规则 {regex_rule}。')
                 return False

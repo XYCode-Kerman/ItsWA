@@ -17,7 +17,7 @@ class Language(abc.ABC):
 
     @abc.abstractmethod
     def compile(self, source: pathlib.Path, output: pathlib.Path) -> bool:
-        pass
+        pass  # pragma: no cover
 
 
 class CPP(Language):
@@ -31,13 +31,13 @@ class CPP(Language):
     def pre_compile_check(self, source: pathlib.Path, output: pathlib.Path) -> bool:
         # 编译前检查
         if not source.exists():
-            judge_logger.warning(f'源代码文件 {source} 不存在')
+            judge_logger.debug(f'源代码文件 {source} 不存在')
             return False
 
         code = source.read_text(encoding='utf-8')
 
         if self.filter.filter(code) is False:
-            judge_logger.warning(f'源代码文件 {source} 包含非法代码！')
+            judge_logger.debug(f'源代码文件 {source} 包含非法代码！')
 
             return False
 
@@ -66,7 +66,8 @@ class CPP(Language):
             judge_logger.warning(f'编译 {source} 失败，返回值为 {process.returncode}')
             return False
         elif not output.exists():
-            judge_logger.warning(f'编译 {source} 成功，但目标文件 {output} 不存在')
-            return False
+            judge_logger.warning(
+                f'编译 {source} 成功，但目标文件 {output} 不存在')  # pragma: no cover
+            return False  # pragma: no cover
         else:
             return True

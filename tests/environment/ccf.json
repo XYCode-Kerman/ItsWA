@@ -1,10 +1,10 @@
 {
     "header": {
         "name": "测试比赛",
-        "path": "/home/xycode/ItsWA/temp/test_contest",
         "description": "测试比赛",
         "contest_type": "OI",
-        "enable_oj": false
+        "enable_oj": false,
+        "path": "/home/xycode/ItsWA/tests/environment"
     },
     "contest": {
         "languages": [
@@ -45,6 +45,52 @@
                 "output_format": "测试输入输出格式",
                 "judge_config": {
                     "source_file_name": "b",
+                    "checkpoints": [
+                        {
+                            "input": "114514",
+                            "answer": "114514 114514",
+                            "input_type": "STDIN",
+                            "output_type": "STDOUT"
+                        },
+                        {
+                            "input": "114514 1919810",
+                            "answer": "114514 1919810 114514 1919810",
+                            "input_type": "STDIN",
+                            "output_type": "STDOUT"
+                        }
+                    ]
+                }
+            },
+            {
+                "name": "测试题目3",
+                "description": "测试题目",
+                "input_format": "测试输入输出格式",
+                "output_format": "测试输入输出格式",
+                "judge_config": {
+                    "source_file_name": "d",
+                    "checkpoints": [
+                        {
+                            "input": "114514",
+                            "answer": "114514 114514",
+                            "input_type": "STDIN",
+                            "output_type": "STDOUT"
+                        },
+                        {
+                            "input": "114514 1919810",
+                            "answer": "114514 1919810 114514 1919810",
+                            "input_type": "STDIN",
+                            "output_type": "STDOUT"
+                        }
+                    ]
+                }
+            },
+            {
+                "name": "测试题目4",
+                "description": "测试题目",
+                "input_format": "测试输入输出格式",
+                "output_format": "测试输入输出格式",
+                "judge_config": {
+                    "source_file_name": "e",
                     "checkpoints": [
                         {
                             "input": "114514",

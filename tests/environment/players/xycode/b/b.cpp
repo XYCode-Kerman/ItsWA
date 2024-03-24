@@ -1,5 +1,7 @@
-#include <bits/stdc++.h>
-using namespace std;
+// 必定编译失败
+
+// #include <bits/stdc++.h>
+// using namespace std;
 
 int main() {
     string s;cin>>s;  // 错误解，只能过第一个测试点
