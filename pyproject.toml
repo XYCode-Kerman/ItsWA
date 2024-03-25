@@ -10,6 +10,9 @@ readme = "README.md"
 python = ">=3.10"
 rich = "^13.7.1"
 pydantic = "^2.6.4"
+typer = "^0.10.0"
+fastapi = "^0.110.0"
+uvicorn = "^0.29.0"
 
 
 [[tool.poetry.source]]
