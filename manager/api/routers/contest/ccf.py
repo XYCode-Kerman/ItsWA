@@ -24,7 +24,7 @@ async def get_ccf(path: pathlib.Path):
         )
     except json.JSONDecodeError:
         raise HTTPException(status_code=400, detail='JSON 格式错误')
-    except pydantic.ValidationError as e:
+    except (pydantic.ValidationError, TypeError) as e:
         raise HTTPException(status_code=400, detail=str(e))
 
     return ccf

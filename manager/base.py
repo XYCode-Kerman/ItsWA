@@ -9,7 +9,7 @@ from utils import manager_logger
 from .api import app as api
 
 
-def init_config():
+def init_config():  # pragma: no cover
     configdir = pathlib.Path('./config')
 
     configdir.mkdir(exist_ok=True, parents=True)

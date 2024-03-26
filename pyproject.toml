@@ -25,6 +25,7 @@ priority = "primary"
 pytest = "^8.1.1"
 pytest-cov = "^4.1.0"
 httpx = "0.25"
+pytest-xdist = "^3.5.0"
 
 [build-system]
 requires = ["poetry-core"]
