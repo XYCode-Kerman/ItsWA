@@ -13,7 +13,7 @@ def init_config():
     configdir = pathlib.Path('./config')
 
     configdir.mkdir(exist_ok=True, parents=True)
-    if not configdir.exists():
+    if not configdir.joinpath('contests.json').exists():
         configdir.joinpath('contests.json').touch(exist_ok=True)
         configdir.joinpath('contests.json').write_text('[]', encoding='utf-8')
 
