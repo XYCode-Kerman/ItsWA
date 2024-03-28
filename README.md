@@ -1,5 +1,11 @@
 # ItsWA
 
+![GitHub License](https://img.shields.io/github/license/XYCode-Kerman/ItsWA?style=flat-square)
+
+![GitHub last commit (branch)](https://img.shields.io/github/last-commit/XYCode-Kerman/ItsWA/master?style=flat-square&label=Last%20Commit%20on%20Master)![Codecov (with branch)](https://img.shields.io/codecov/c/github/XYCode-Kerman/ItsWA/master?style=flat-square&label=Coverage%20on%20Master)
+
+![GitHub last commit (branch)](https://img.shields.io/github/last-commit/XYCode-Kerman/ItsWA/develop?style=flat-square&label=Last%20Commit%20on%20Develop)![Codecov (with branch)](https://img.shields.io/codecov/c/github/XYCode-Kerman/ItsWA/develop?style=flat-square&label=Coverage%20on%20Develop)
+
 ItsWA是一个基于`Python`搭建，使用`Lrun`提供安全运行时的`Linux`下的竞赛代码评测系统。
 
 ## 使用教程
