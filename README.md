@@ -2,9 +2,9 @@
 
 ![GitHub License](https://img.shields.io/github/license/XYCode-Kerman/ItsWA?style=flat-square)
 
-![GitHub last commit (branch)](https://img.shields.io/github/last-commit/XYCode-Kerman/ItsWA/master?style=flat-square&label=Last%20Commit%20on%20Master)![Codecov (with branch)](https://img.shields.io/codecov/c/github/XYCode-Kerman/ItsWA/master?style=flat-square&label=Coverage%20on%20Master)
+![GitHub last commit (branch)](https://img.shields.io/github/last-commit/XYCode-Kerman/ItsWA/master?style=flat-square&label=Last%20Commit%20on%20Master) ![Codecov (with branch)](https://img.shields.io/codecov/c/github/XYCode-Kerman/ItsWA/master?style=flat-square&label=Coverage%20on%20Master)
 
-![GitHub last commit (branch)](https://img.shields.io/github/last-commit/XYCode-Kerman/ItsWA/develop?style=flat-square&label=Last%20Commit%20on%20Develop)![Codecov (with branch)](https://img.shields.io/codecov/c/github/XYCode-Kerman/ItsWA/develop?style=flat-square&label=Coverage%20on%20Develop)
+![GitHub last commit (branch)](https://img.shields.io/github/last-commit/XYCode-Kerman/ItsWA/develop?style=flat-square&label=Last%20Commit%20on%20Develop) ![Codecov (with branch)](https://img.shields.io/codecov/c/github/XYCode-Kerman/ItsWA/develop?style=flat-square&label=Coverage%20on%20Develop)
 
 ItsWA是一个基于`Python`搭建，使用`Lrun`提供安全运行时的`Linux`下的竞赛代码评测系统。
 
@@ -27,7 +27,13 @@ GNU 通用公共许可证是传染性协议，这意味着所有使用到 ItsWA 
 xycode-xyc@outlook.com，获得许可后您可无视 GNU 通用公共许可证中的条款来对本软件的某一版
 本进行修改和再分发。（详情请见用户手册）
 
-## Work-In-Progress
+## 关于开发
+
+### 测试结果（来自CodeCov）
+
+![codecov.io/gh/XYCode-Kerman/ItsWA/graphs/icicle.svg?token=8knjccNoca](https://codecov.io/gh/XYCode-Kerman/ItsWA/graphs/icicle.svg?token=8knjccNoca)
+
+### Work-In-Progress
 
 本项目正处于开发状态，请勿将其用于正式比赛的评测！我们不保证评测结果始终是正确的。
 
@@ -56,3 +62,4 @@ xycode-xyc@outlook.com，获得许可后您可无视 GNU 通用公共许可证�
   - [ ] 安全防护
     - [x] 代码过滤
     - [ ] 系统调用防护
+
