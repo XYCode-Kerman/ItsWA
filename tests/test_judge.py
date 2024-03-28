@@ -4,7 +4,7 @@ import tempfile
 
 import pytest
 
-from ccf_parser import CCF
+from ccf_parser import CCF, CheckPoint
 from judge import start_judging
 from judge.languages import CPP, Language
 from judge.runtime import simple_runtime
@@ -88,3 +88,22 @@ def test_simple_runtime():
         input_type,
         pathlib.Path('/tmp/a.in')
     ) == Status.RuntimeError
+
+
+def test_checkpoint_compare():
+    ckpt = CheckPoint(
+        input='test',
+        answer='test test',
+        input_type='STDIN',
+        output_type='STDOUT'
+    )
+
+    assert ckpt.compare('test test') == True
+    assert ckpt.compare(' test test ') == True
+    assert ckpt.compare(' test test \n') == True
+    assert ckpt.compare(' test test \n\n') == True
+
+    assert ckpt.compare('test2 test') == False
+    assert ckpt.compare(' test2 test ') == False
+    assert ckpt.compare(' test2 test \n') == False
+    assert ckpt.compare(' test2 test \n\n') == False
