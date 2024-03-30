@@ -9,3 +9,4 @@ class Status(Enum):
     TimeLimitExceeded = 'TLE'
     MemoryLimitExceeded = 'MLE'
     OutputLimitExceeded = 'OLE'
+    JudgeInternalError = 'JIE'
