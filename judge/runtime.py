@@ -12,15 +12,19 @@ class SimpleRuntime(object):
     def __init__(self) -> None:
         pass
 
-    def __call__(self, executeable_file: pathlib.Path, input_content: str, input_type: Literal['STDIN', 'FILE'], file_input_path: pathlib.Path = None, timeout: float = 1.0) -> Union[str, Status]:
-        """返回 STDOUT（STDOUT 无输出时返回第一个后缀为 .out 的文件的内容）"""
+    def calling_precheck(self, executeable_file: pathlib.Path, input_content: str, input_type: Literal['STDIN', 'FILE'], file_input_path: pathlib.Path = None, timeout: float = 1.0) -> bool:
         if file_input_path is not None:
             if file_input_path.is_absolute():
                 judge_logger.warning(
                     f'执行评测时的输入文件路径 {file_input_path} 是绝对路径，正确的格式应当为 `Path("hello.in")` 一类。\n运行失败，返回状态码 RE。')
-                return Status.RuntimeError
+                return False
 
         executeable_file.chmod(0o700)
+
+    def __call__(self, executeable_file: pathlib.Path, input_content: str, input_type: Literal['STDIN', 'FILE'], file_input_path: pathlib.Path = None, timeout: float = 1.0) -> Union[str, Status]:
+        """返回 STDOUT（STDOUT 无输出时返回第一个后缀为 .out 的文件的内容）"""
+        if self.calling_precheck(executeable_file, input_content, input_type, file_input_path, timeout) is False:
+            return Status.RuntimeError
 
         if input_type == 'STDIN':
             process = self.stdin_executor(executeable_file)
@@ -74,6 +78,32 @@ class SimpleRuntime(object):
         )
 
         return process
+
+
+class SafetyRuntimeWithLrun(SimpleRuntime):
+    def __init__(self) -> None:
+        super().__init__()
+
+    def __call__(self, executeable_file: pathlib.Path, input_content: str, input_type: Literal['STDIN'] | Literal['FILE'], file_input_path: pathlib.Path = None, timeout: float = 1) -> str | Status:
+        if self.calling_precheck(executeable_file, input_content, input_type, file_input_path, timeout) is False:
+            return Status.RuntimeError
+
+    def stdin_executor(self, executeable_file: pathlib.Path, network: bool, timeout: float, max_memory: int, uid: int, gid: int) -> subprocess.Popen[bytes]:
+        # 注：max_memory 的单位为byte
+
+        subprocess.Popen(
+            [
+                'sudo',
+                'lrun',
+                '--network', 'true' if network else 'false',
+                '--max-real-time', str(timeout),
+                '--max-memory', str(max_memory),
+                '--isolate-process', 'true',
+                '--uid', str(uid),
+                '--gid', str(gid),
+
+            ]
+        )
 
 
 simple_runtime = SimpleRuntime()
