@@ -14,7 +14,7 @@ app.add_typer(judge_typer)
 
 
 @app.command(name='intro', help='查看ItsWA介绍')
-def intro(name: str, branch: Optional[str] = 'master'):
+def intro():
     md = Markdown(
         """
 ## 欢迎使用 ItsWA 评测系统
