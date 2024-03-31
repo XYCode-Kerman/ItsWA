@@ -4,7 +4,7 @@
         "description": "测试比赛",
         "contest_type": "OI",
         "enable_oj": false,
-        "path": "/home/xycode/ItsWA/tests/environment"
+        "path": "/mnt/e/ItsWA/tests/environment"
     },
     "contest": {
         "languages": [

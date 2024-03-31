@@ -80,30 +80,38 @@ class SimpleRuntime(object):
         return process
 
 
-class SafetyRuntimeWithLrun(SimpleRuntime):
-    def __init__(self) -> None:
-        super().__init__()
+# TODO: 暂缓开发安全运行时
+# class SafetyRuntimeWithLrun(SimpleRuntime):
+#     def __init__(self) -> None:
+#         super().__init__()
 
-    def __call__(self, executeable_file: pathlib.Path, input_content: str, input_type: Literal['STDIN'] | Literal['FILE'], file_input_path: pathlib.Path = None, timeout: float = 1) -> str | Status:
-        if self.calling_precheck(executeable_file, input_content, input_type, file_input_path, timeout) is False:
-            return Status.RuntimeError
+#         if os.getuid() != 0 or os.getgid() != 0:  # pragma: no cover
+#             raise RuntimeError('必须为 Root 用户才能使用 SafetyRuntimeWithLrun。')
 
-    def stdin_executor(self, executeable_file: pathlib.Path, network: bool, timeout: float, max_memory: int, uid: int, gid: int) -> subprocess.Popen[bytes]:
-        # 注：max_memory 的单位为byte
+#     def __call__(self, executeable_file: pathlib.Path, input_content: str, input_type: Literal['STDIN'] | Literal['FILE'], file_input_path: pathlib.Path = None, timeout: float = 1) -> str | Status:
+#         if self.calling_precheck(executeable_file, input_content, input_type, file_input_path, timeout) is False:
+#             return Status.RuntimeError
 
-        subprocess.Popen(
-            [
-                'sudo',
-                'lrun',
-                '--network', 'true' if network else 'false',
-                '--max-real-time', str(timeout),
-                '--max-memory', str(max_memory),
-                '--isolate-process', 'true',
-                '--uid', str(uid),
-                '--gid', str(gid),
+#         if input_type == 'STDIN':
+#             self.stdin_executor(executeable_file, network=False, timeout=timeout, max_memory=0, uid=0, gid=0)
 
-            ]
-        )
+#     def stdin_executor(self, executeable_file: pathlib.Path, network: bool, timeout: float, max_memory: int, uid: int, gid: int) -> subprocess.Popen[bytes]:
+#         # 注：max_memory 的单位为byte
+
+#         process = subprocess.Popen(
+#             [
+#                 'sudo',
+#                 'lrun',
+#                 '--network', 'true' if network else 'false',
+#                 '--max-cpu-time', str(timeout),
+#                 '--max-memory', str(max_memory),
+#                 '--isolate-process', 'true',
+#                 '--uid', str(uid),
+#                 '--gid', str(gid)
+#             ]
+#         )
+
+#         return process
 
 
 simple_runtime = SimpleRuntime()
