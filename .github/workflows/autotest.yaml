@@ -40,7 +40,7 @@ jobs:
         run: poetry install
 
       - name: Run the automated tests
-        run: poetry run pytest --cov --cov-report=xml -n 6 -v
+        run: poetry run pytest --cov --cov-report=xml -v
 
       - uses: codecov/codecov-action@v4
         with:
