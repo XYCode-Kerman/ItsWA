@@ -2,6 +2,9 @@
 \usepackage[scale=0.8]{geometry}
 \usepackage{ulem, paralist}
 
+\setCJKmainfont{simsun.ttc}[ BoldFont = simhei.ttf, ItalicFont = simkai.ttf ]
+\setCJKsansfont{ msyh.ttc } [ BoldFont = *~Bold ]
+
 \newcommand{\itswa}{ItsWA}
 
 \title{\textbf{\itswa 用户手册}}
@@ -12,6 +15,7 @@
     \maketitle
 
     \tableofcontents
+    \clearpage
 
     \section*{关于本文}
         本文档是Github项目 \itswa 的用户手册。
@@ -57,6 +61,9 @@
             Linux $\ge 2.6.26$ 最低，$\ge 3.12$ 推荐。
 
             Lrun 最新版本。
+
+        \subsection{Lrun的编译}
+            Lrun 的编译需要的stropts.h，但是目前最新的Linux中已经不包含该头文件，因此请使用旧版Linux进行编译（至少我在Ubuntu 16.04上成功编译了）。后续我们也会根据MIT协议在 \itswa 中提供Lrun的二进制文件。
         
         \subsection{NOI Linux}
             您可以只需在NOI Linux上安装\textbf{安全运行时}，即可使用本软件。
@@ -69,6 +76,74 @@
         一些无法使用 Json 存储的数据结构被称作 Binary Config File，简称 BCF，它们将会被保存在比赛目录下的 bcf/ 目录。
 
         我们非常\textbf{不推荐}您手动编辑CCF，因为这可能导致错误，您应当使用 Manager 来编辑它们。如果您希望手动编辑CCF，请查看 \itswa 的CCF解析器中的定义\footnote{基于Pydantic定义的数据结构类型十分直观，因此我们认为\itswa CCF 解析器的中的定义应当成为 CCF 的事实标准。}后再编辑。
+
+    \section{常见问题与解决方案}
+        \subsection{找不到Lrun}
+            请检查你是否安装了Lrun，并且Lrun处于环境变量\$PATH\$规定的目录下。
+
+        \subsection{评测结果为 Status.JudgeInternalError}
+            请检查日志，并按照上方提到的方法进行解决。如果无法按照手册中的方法解决，请\uline{先查询}相关的Issue，\uline{如果没有}则再提起\textbf{新的Issue}。
+
+    \section{开发者手册}
+        \subsection{提交规范}
+            \subsubsection{提交签名}
+                为了防止恶意用户使用和贡献者相同的用户名和邮箱伪造提交，从2024年3月29日起 \itswa 项目只会接收已签名(Verified)的提交。
+
+                没有验证的提交将会被Revert，含有未验证提交的PR将会被关闭。
+
+            \subsubsection{提交描述}
+                一个好的提交说明可以帮助你清楚地了解这次提交所做的更改和解决的问题。
+                
+                \itswa 的提交描述共有四种类型\textbf{新增}、\textbf{更改}、\textbf{新增测试}和\textbf{删除/移除}。提交描述的冒号前是提交类型，后面是具体说明，例如\textit{新增测试：CCF和比赛管理器(API)}是一个\textbf{清晰的}描述，相反\textit{新增测试并改进部分代码}则是一个\textbf{模糊}的描述。
+
+                \vspace{0.1cm}
+            
+                \noindent 对于\textbf{新增}类型的提交，请确保包含如下信息：
+
+                \begin{compactenum}
+                    \item \textbf{问题描述：}简要描述你要解决的问题或者你要实现的功能。
+                    \item \textbf{是否含有测试：}如果您的提交附带有测试，请注明。
+                \end{compactenum}
+
+                \vspace{0.1cm}
+
+                \noindent 对于\textbf{更改}类型的提交，请确保包含如下信息：
+
+                \begin{compactenum}
+                    \item \textbf{更改对象：}清楚的描述你更改的对象，例如\textit{README}或\textit{main.py}。
+                    \item \textbf{更改内容：}清楚的描述你更改的内容，例如\textit{修改函数名hello为goodbye}。
+                \end{compactenum}
+
+                \vspace{0.1cm}
+
+                \noindent 对于\textbf{新增测试}类型的提交，请确保包含如下信息：
+
+                \begin{compactenum}
+                    \item \textbf{对谁的测试：}描述你是对哪个对象进行
+                \end{compactenum}
+
+        \subsection{代码规范}
+            除本项目另有规定，所有代码均需要符合PEP8规范。
+
+            建议本项目贡献者安装autopep8并设置为保存时自动格式化。
+
+        \subsection{程序测试}
+            程序测试是一个程序可靠性的根本保障，因此我们要求 \itswa 的测试覆盖率必须 $\geq 95\%$。
+
+            对于无法测试到的代码\footnote{例如\textit{编译成功但没有可执行文件}一类的玄学问题和功能简单到无需测试的代码。}，应当使用\uline{\#pragma no cover}进行标记。值得注意的是，如果您只是为了达到覆盖率要求，而大量使用该标记，\textbf{那么您的提交或PR将会被拒绝}。
+
+            \itswa 使用Pytest作为测试框架，使用Pytest-Cov生成测试率报告，使用Pytest-Xdist实现多线程测试，只需执行\uline{pytest --cov --cov-report=html -v -n auto}即可自动进行多线程测试并生成html报告。
+
+            \subsubsection{测试数据}
+                对于纯文本类的数据\textbf{例如Json}等，建议内置在测试脚本中。对于较大的文件或二进制文件，应当存储在\uline{tests/environment}中。
+
+            \subsubsection{特殊测试}
+                涉及对文件、系统进行操作的功能，请确保该测试\textbf{不会对系统造成危害}，并且程序应当做到测试结束后，被操作的文件、系统可以自动\textbf{恢复原样}。
+
+                一种较好的方式是使用\textbf{tempfile}库创建一个临时文件夹，将测试数据拷贝到该文件夹中，然后对临时文件夹中的数据进行修改。
+
+            \subsubsection{自动测试}
+                \itswa 使用CodeCov托管测试结果，并使用Github Actions进行自动测试。如果你Fork了本仓库，那么\uline{Github Actions的自动测试将无法正常运行}。出现这一情况是因为您的仓库中没有设置CodeCov Token和正确的slug。
     
     \section{版权声明}
         \subsection{声明}
