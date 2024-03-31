@@ -90,6 +90,10 @@ def test_simple_runtime():
     ) == Status.RuntimeError
 
 
+# def test_safety_runtime_with_lrun():
+    # safety_runtime_with_lrun(pathlib.Path('test'), 'test', 'STDIN')
+
+
 def test_checkpoint_compare():
     ckpt = CheckPoint(
         input='test',

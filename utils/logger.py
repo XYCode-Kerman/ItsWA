@@ -4,7 +4,7 @@ from rich.logging import RichHandler
 
 logging.basicConfig(
     handlers=[RichHandler()],
-    level=logging.DEBUG,
+    level=logging.INFO,
 )
 
 manager_logger = logging.getLogger('ItsWA-Manager')
