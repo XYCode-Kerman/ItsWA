@@ -3,9 +3,8 @@ import pathlib
 import subprocess
 from typing import Literal, Union
 
+from ccf_parser.status import Status
 from utils import judge_logger
-
-from .status import Status
 
 
 class SimpleRuntime(object):
