@@ -12,7 +12,7 @@
         ],
         "problems": [
             {
-                "name": "测试题目1",
+                "name": "1：AC;2: WA",
                 "description": "测试题目",
                 "input_format": "测试输入输出格式",
                 "output_format": "测试输入输出格式",
@@ -39,7 +39,7 @@
                 }
             },
             {
-                "name": "测试题目2",
+                "name": "CE1",
                 "description": "测试题目",
                 "input_format": "测试输入输出格式",
                 "output_format": "测试输入输出格式",
@@ -62,7 +62,7 @@
                 }
             },
             {
-                "name": "测试题目3",
+                "name": "CE2",
                 "description": "测试题目",
                 "input_format": "测试输入输出格式",
                 "output_format": "测试输入输出格式",
@@ -85,7 +85,7 @@
                 }
             },
             {
-                "name": "测试题目4",
+                "name": "RE",
                 "description": "测试题目",
                 "input_format": "测试输入输出格式",
                 "output_format": "测试输入输出格式",

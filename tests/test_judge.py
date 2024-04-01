@@ -5,10 +5,10 @@ import tempfile
 import pytest
 
 from ccf_parser import CCF, CheckPoint
+from ccf_parser.status import Status
 from judge import start_judging
 from judge.languages import CPP, Language
 from judge.runtime import simple_runtime
-from judge.status import Status
 
 data = json.load(pathlib.Path('./tests/environment/ccf.json').open())
 ccf = CCF(**data)

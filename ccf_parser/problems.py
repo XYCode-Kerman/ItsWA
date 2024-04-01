@@ -7,6 +7,7 @@ from pydantic import BaseModel
 class CheckPoint(BaseModel):
     input: str
     answer: str
+    ckpt_score: int = 10
 
     input_type: Literal['STDIN', 'FILE']
     output_type: Literal['STDOUT', 'FILE']
