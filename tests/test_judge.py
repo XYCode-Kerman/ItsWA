@@ -5,9 +5,9 @@ from pathlib import Path
 
 import pytest
 
-from ccf_parser import CCF, CheckPoint
+from ccf_parser import CCF, CheckPoint, JudgingResult
 from ccf_parser.status import Status
-from judge import start_judging
+from judge import ReportAnalyze, start_judging
 from judge.languages import CPP, Language
 from judge.runtime import simple_runtime
 
@@ -54,8 +54,15 @@ def test_compile(temp_contest: Path):
     ) == False
 
 
-def test_start_juding(ccf: CCF):
-    start_judging(ccf)
+def test_start_juding(temp_contest: Path):
+    ccf = CCF(**json.loads(temp_contest.joinpath('ccf.json').read_text('utf-8')))
+    results = start_judging(ccf)
+
+    # 分析
+    analyzed = ReportAnalyze(results).generate()
+
+    assert analyzed.find("测试点 1: AC") != -1
+    assert analyzed.find("测试点 2: WA") != -1
 
 
 def test_illegal_language(ccf: CCF):

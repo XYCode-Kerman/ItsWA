@@ -33,7 +33,7 @@ def start_judging(ccf: CCF):
         judging_results.append(result)
 
     # 保存评测数据
-    Path('./judging_results.json').write_text(
+    Path(ccf.header.path).joinpath('./judging_results.json').write_text(
         json.dumps(
             [x.model_dump(mode='json') for x in judging_results],
             indent=4,
