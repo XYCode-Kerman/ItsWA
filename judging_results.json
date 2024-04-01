@@ -1,0 +1,119 @@
+[
+    {
+        "player_order": "xycode",
+        "problems_result": {
+            "1：AC;2: WA": [
+                {
+                    "ckpt": {
+                        "input": "114514",
+                        "answer": "114514 114514",
+                        "ckpt_score": 10,
+                        "input_type": "FILE",
+                        "output_type": "FILE",
+                        "input_file": "a.in",
+                        "output_file": "a.out"
+                    },
+                    "score": 10,
+                    "status": "AC"
+                },
+                {
+                    "ckpt": {
+                        "input": "114514 1919810",
+                        "answer": "114514 1919810 114514 1919810",
+                        "ckpt_score": 10,
+                        "input_type": "FILE",
+                        "output_type": "FILE",
+                        "input_file": "a.in",
+                        "output_file": "a.out"
+                    },
+                    "score": 0,
+                    "status": "WA"
+                }
+            ],
+            "CE1": [
+                {
+                    "ckpt": {
+                        "input": "114514",
+                        "answer": "114514 114514",
+                        "ckpt_score": 10,
+                        "input_type": "STDIN",
+                        "output_type": "STDOUT",
+                        "input_file": null,
+                        "output_file": null
+                    },
+                    "score": 0,
+                    "status": "CE"
+                },
+                {
+                    "ckpt": {
+                        "input": "114514 1919810",
+                        "answer": "114514 1919810 114514 1919810",
+                        "ckpt_score": 10,
+                        "input_type": "STDIN",
+                        "output_type": "STDOUT",
+                        "input_file": null,
+                        "output_file": null
+                    },
+                    "score": 0,
+                    "status": "CE"
+                }
+            ],
+            "CE2": [
+                {
+                    "ckpt": {
+                        "input": "114514",
+                        "answer": "114514 114514",
+                        "ckpt_score": 10,
+                        "input_type": "STDIN",
+                        "output_type": "STDOUT",
+                        "input_file": null,
+                        "output_file": null
+                    },
+                    "score": 0,
+                    "status": "CE"
+                },
+                {
+                    "ckpt": {
+                        "input": "114514 1919810",
+                        "answer": "114514 1919810 114514 1919810",
+                        "ckpt_score": 10,
+                        "input_type": "STDIN",
+                        "output_type": "STDOUT",
+                        "input_file": null,
+                        "output_file": null
+                    },
+                    "score": 0,
+                    "status": "CE"
+                }
+            ],
+            "RE": [
+                {
+                    "ckpt": {
+                        "input": "114514",
+                        "answer": "114514 114514",
+                        "ckpt_score": 10,
+                        "input_type": "STDIN",
+                        "output_type": "STDOUT",
+                        "input_file": null,
+                        "output_file": null
+                    },
+                    "score": 0,
+                    "status": "RE"
+                },
+                {
+                    "ckpt": {
+                        "input": "114514 1919810",
+                        "answer": "114514 1919810 114514 1919810",
+                        "ckpt_score": 10,
+                        "input_type": "STDIN",
+                        "output_type": "STDOUT",
+                        "input_file": null,
+                        "output_file": null
+                    },
+                    "score": 0,
+                    "status": "RE"
+                }
+            ]
+        }
+    }
+]

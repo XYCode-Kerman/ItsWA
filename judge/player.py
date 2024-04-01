@@ -94,7 +94,7 @@ class Player(object):
             else:
                 judge_logger.warning(
                     f'{problem_dir.joinpath(f"{problem.judge_config.source_file_name}.cpp").absolute()} 不存在或是不符合题目配置的编程语言。')
-                for ckpt in judging_result.checkpoints_result:
+                for ckpt in problem.judge_config.checkpoints:
                     judging_result.problems_result[problem.name].append(
                         CheckPointResult(
                             ckpt=ckpt,

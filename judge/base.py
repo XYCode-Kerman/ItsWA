@@ -45,3 +45,4 @@ def start_judging(ccf: CCF):
     end = datetime.datetime.now()
     judge_logger.info(
         f'评测比赛 {ccf.header.name} 完成，当前时间：{end}，总用时：{end - start}')
+    return judging_results
