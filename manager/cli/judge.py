@@ -4,8 +4,8 @@ from typing import Annotated, Optional, Union
 
 import typer
 
-from ccf_parser import CCF
-from judge import start_judging
+from ccf_parser import CCF, JudgingResult
+from judge import ReportAnalyze, start_judging
 from utils import manager_logger
 
 app = typer.Typer(name='judge', help='评测相关')
@@ -24,3 +24,31 @@ def start_judging_command(path: Annotated[Path, typer.Argument(help='比赛目�
 
     start_judging(ccf)
     return 0
+
+
+@app.command('analyze', help='分析评测报告')
+def analyze_command(
+    path: Annotated[Path, typer.Argument(help='报告文件')] = Path(
+        './judging_results.json'),
+    output: Annotated[Path, typer.Argument(
+        help='输出报告HTML的地址')] = Path('./report.html'),
+):
+    if not path.exists():
+        raise FileNotFoundError('报告文件不存在')
+
+    if not path.is_file():
+        raise IsADirectoryError('报告文件是一个目录')
+
+    manager_logger.info(f'开始分析报告文件 {path}')
+
+    analyze = ReportAnalyze(
+        [
+            JudgingResult(**x)
+            for x in json.loads(path.read_text('utf-8'))
+        ]
+    )
+    report_html = analyze.generate()
+
+    output.write_text(report_html, 'utf-8')
+
+    manager_logger.info('分析完成')
