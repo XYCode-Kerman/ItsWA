@@ -7,6 +7,7 @@ from rich.markdown import Markdown
 from rich.panel import Panel
 from rich.text import Text
 
+from ..base import _start_server, start_server_background
 from .contest import app as contest_typer
 from .judge import app as judge_typer
 
@@ -26,3 +27,8 @@ ItsWA是一个基于Python搭建，使用`Lrun`提供安全运行时的Linux下�
     )
 
     print(md)
+
+
+@app.command(name='server')
+def start_server_command():
+    _start_server()
