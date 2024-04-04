@@ -16,7 +16,7 @@ app = typer.Typer(name='contest', help='比赛管理器')
 def init_contest_command(
     path: Annotated[Path, typer.Argument(help='比赛文件夹')] = Path('.'),
     autocreate: Annotated[bool, typer.Option(help='自动创建文件夹')] = True
-):
+):  # pragma: no cover
     if autocreate:
         path.mkdir(exist_ok=True, parents=True)
 

@@ -1,9 +1,11 @@
+import shutil
 from pathlib import Path
 
 import pytest
 from typer.testing import CliRunner
 
 from manager import cli_app
+from manager.cli.base import download_ited
 
 
 @pytest.fixture
@@ -41,3 +43,10 @@ def test_start_judging(cli_runner: CliRunner, temp_contest: Path):
         cli_app, ["judge", "analyze", temp_contest.joinpath('foo').absolute().__str__()]).exit_code != 0
     assert cli_runner.invoke(
         cli_app, ["judge", "analyze", temp_contest.joinpath('players').absolute().__str__()]).exit_code != 0
+
+
+def test_download_ited():
+    shutil.rmtree('./assets')
+
+    download_ited()
+    download_ited()

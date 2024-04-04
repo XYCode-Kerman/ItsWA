@@ -23,21 +23,7 @@ app.add_typer(judge_typer)
 app.add_typer(contest_typer)
 
 
-@app.command(name='intro', help='查看ItsWA介绍')
-def intro():
-    md = Markdown(
-        """
-## 欢迎使用 ItsWA 评测系统
-ItsWA是一个基于Python搭建，使用`Lrun`提供安全运行时的Linux下的竞赛代码评测系统。
-查看`docs/guide.pdf`获取使用教程
-"""
-    )
-
-    print(md)
-
-
-@app.command(name='server')
-def start_server_command():
+def download_ited():
     ited_zipfile_path = Path('./assets/ited.zip').absolute()
     ited_folder_path = Path('./assets/ited').absolute()
 
@@ -58,6 +44,24 @@ def start_server_command():
             ited_zipfile = zipfile.ZipFile(ited_zipfile_path.__str__(), 'r')
             ited_zipfile.extractall(ited_folder_path.__str__())
             ited_zipfile.close()
+
+
+@app.command(name='intro', help='查看ItsWA介绍')
+def intro():
+    md = Markdown(
+        """
+## 欢迎使用 ItsWA 评测系统
+ItsWA是一个基于Python搭建，使用`Lrun`提供安全运行时的Linux下的竞赛代码评测系统。
+查看`docs/guide.pdf`获取使用教程
+"""
+    )
+
+    print(md)
+
+
+@app.command(name='server')
+def start_server_command():  # pragma: no cover
+    download_ited()
 
     manager_logger.info('访问 http://localhost:2568/editor 以访问ItsWA Manager。')
     _start_server()

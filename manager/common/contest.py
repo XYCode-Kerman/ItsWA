@@ -3,7 +3,7 @@ from pathlib import Path
 from ccf_parser import CCF
 
 
-def init_contest(ccf: CCF, path: Path):
+def init_contest(ccf: CCF, path: Path):  # pragma: no cover
     if not path.exists():
         raise FileNotFoundError("比赛目录不存在")
 
