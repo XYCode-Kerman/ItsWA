@@ -7,7 +7,7 @@ license = "MIT"
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = ">=3.10"
+python = ">=3.10,<4.0"
 rich = "^13.7.1"
 pydantic = "^2.6.4"
 typer = "^0.10.0"
