@@ -46,7 +46,7 @@ def test_start_judging(cli_runner: CliRunner, temp_contest: Path):
 
 
 def test_download_ited():
-    shutil.rmtree('./assets')
+    shutil.rmtree('./assets', ignore_errors=True)
 
     download_ited()
     download_ited()
