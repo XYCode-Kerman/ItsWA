@@ -6,6 +6,7 @@
 \setCJKsansfont{ msyh.ttc } [ BoldFont = *~Bold ]
 
 \newcommand{\itswa}{ItsWA}
+\newcommand{\ited}{\itswa \space Editor}
 
 \title{\textbf{\itswa 用户手册}}
 \author{XYCode}
@@ -25,7 +26,7 @@
     \section{基本架构}
         本项目主要由三部分组成。
 
-        \subsection{管理器 Manager（WIP）}
+        \subsection{管理器 Manager}
             管理器用于提供一系列TUI、GUI供用户调用，以实现对比赛和评测的管理。
 
         \subsection{评测器 Judge}
@@ -35,6 +36,17 @@
 
         \subsection{在线评测系统 Online Judge（WIP）}
             本项目自带一个在线评测系统，选手可直接在该平台内提交自己的代码并获得即时评测结果。由于本项目的评测器存在被卡的可能性，因此\textbf{本项目自带的OJ \uline{不得被用于搭建OJ平台}}，我们仅推荐将其作为校级、市级等小型非正式比赛的一个提交通道。
+
+    \section{管理器实现}
+        \subsection{API}
+            \itswa 提供了一个API用于管理比赛和CCF文件，使用命令server开启该API。
+
+            注意事项：该API没有做身份验证处理，请不要将该API暴露在公网！
+
+        \subsection{\ited}
+            \ited 是一个基于Vue实现的CCF管理器，是目前 \itswa 唯一的GUI管理器实现。其使用 \itswa API 对CCF文件进行修改。
+
+            \ited 会在\itswa API启动时自动下载并打开。
     
     \section{系统要求}
         注：\itswa 的开发环境为 ArchWSL，如果您在其他平台上遇到了问题，请及时通过Issue向我们报告。
