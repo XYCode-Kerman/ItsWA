@@ -6,8 +6,10 @@ from pathlib import Path
 from typing import Generator
 
 import pytest
+from fastapi.testclient import TestClient
 
 from ccf_parser import CCF
+from manager.api import app as api
 
 
 @pytest.fixture(scope='function')
@@ -41,3 +43,8 @@ def ccf(temp_contest: Path) -> CCF:
     data = json.loads(temp_contest.joinpath('ccf.json').read_text('utf-8'))
     ccf = CCF(**data)
     return ccf
+
+
+@pytest.fixture(scope='module')
+def api_client():
+    yield TestClient(api)

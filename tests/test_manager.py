@@ -3,11 +3,14 @@ import json
 import pathlib
 import tempfile
 import uuid
+from pathlib import Path
+from typing import *
 
 import pytest
 from fastapi.testclient import TestClient
 
 from manager.base import api, start_server_background
+from tests.conftest import temp_contest
 
 client = TestClient(api)
 
@@ -115,3 +118,33 @@ def test_ccf():
     resp = client.put(
         f'/contest/ccf?path={ccf3}', content=json.dumps(tempcon_ccf))
     assert resp.status_code == 400
+
+
+def test_get_contests(api_client):
+    contest_path = Path('./config/contests.json').absolute()
+    fake_contest = {
+        "name": "homo's contest",
+        "description": "string",
+        "ccf_file": "/tmp/114514"
+    }
+
+    data: List[Dict[str, str]] = json.load(contest_path.open())
+    data.append(fake_contest)
+    json.dump(data, contest_path.open(mode='w'), indent=4, ensure_ascii=False)
+
+    result = api_client.get('/contest/')
+    assert fake_contest not in result.json()
+
+
+def test_delete_empty_contest(api_client, temp_contest):
+    result = api_client.delete(f'/contest/?path=/tmp/114514')
+    assert result.status_code == 404
+
+    temp_contest.joinpath('ccf.json').unlink()
+    result = api_client.delete(f'/contest/?path={temp_contest}')
+    assert result.status_code == 404
+
+
+def test_delete_contest(api_client, temp_contest):
+    result = api_client.delete(f'/contest/?path={temp_contest}')
+    assert result.status_code == 404
