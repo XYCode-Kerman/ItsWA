@@ -2,6 +2,7 @@ import datetime
 import json
 import pathlib
 import tempfile
+import time
 import uuid
 from pathlib import Path
 from typing import *
@@ -148,3 +149,39 @@ def test_delete_empty_contest(api_client, temp_contest):
 def test_delete_contest(api_client, temp_contest):
     result = api_client.delete(f'/contest/?path={temp_contest}')
     assert result.status_code == 404
+
+
+def test_start_judging(api_client, temp_contest):
+    result = api_client.post(f'/contest/judge/start?contest_path=/tmp/114514')
+    assert result.status_code == 404
+    assert result.json()['detail'] == '路径不存在'
+
+    result = api_client.post(f'/contest/judge/start?contest_path=/tmp')
+    assert result.status_code == 404
+    assert result.json()['detail'] == 'ccf.json 文件不存在'
+
+    result = api_client.post(
+        f'/contest/judge/start?contest_path={temp_contest}')
+    assert len(result.json()['trackId']) > 0
+    assert result.status_code == 200
+
+    # 查询结果
+    trackId = result.json()['trackId']
+
+    result = api_client.get(f'/contest/judge/result/error-trackid')
+    assert result.status_code == 422
+
+    result = api_client.get(f'/contest/judge/result/{uuid.uuid4()}')
+    assert result.status_code == 404
+
+    n = 10
+
+    for i in range(n):  # pragma: no cover
+        result = api_client.get(f'/contest/judge/result/{trackId}')
+        if result.status_code == 200:
+            break
+        elif i == n - 1:
+            assert result.status_code == 200
+        time.sleep(0.5)
+
+    assert result.status_code == 200
