@@ -1,6 +1,7 @@
 import datetime
 import json
 from pathlib import Path
+from typing import *
 from typing import List
 
 from ccf_parser import CCF
@@ -10,7 +11,7 @@ from utils import judge_logger
 from .player import Player
 
 
-def start_judging(ccf: CCF):
+def start_judging(ccf: CCF) -> Generator[List[JudgingResult], Any, Any]:
     start = datetime.datetime.now()
     judging_results: List[JudgingResult] = []
     judge_logger.info(f'开始评测比赛 {ccf.header.name}，当前时间：{start}')
@@ -31,6 +32,8 @@ def start_judging(ccf: CCF):
     for player in players:
         result = player.judging(ccf)
         judging_results.append(result)
+        yield result
+        judge_logger.info(f'选手 {player.order} 评测完成。')
 
     # 保存评测数据
     Path(ccf.header.path).joinpath('./judging_results.json').write_text(
@@ -45,4 +48,3 @@ def start_judging(ccf: CCF):
     end = datetime.datetime.now()
     judge_logger.info(
         f'评测比赛 {ccf.header.name} 完成，当前时间：{end}，总用时：{end - start}')
-    return judging_results

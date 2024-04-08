@@ -56,7 +56,7 @@ def test_compile(temp_contest: Path):
 
 def test_start_juding(temp_contest: Path):
     ccf = CCF(**json.loads(temp_contest.joinpath('ccf.json').read_text('utf-8')))
-    results = start_judging(ccf)
+    results = list(start_judging(ccf))
 
     # 分析
     analyzed = ReportAnalyze(results).generate()
