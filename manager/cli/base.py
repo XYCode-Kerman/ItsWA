@@ -33,7 +33,7 @@ def download_ited():
         ited_zipfile_path.touch()
 
         res = requests.get(
-            'https://mirror.ghproxy.com/https://github.com/XYCode-Kerman/ItsWA-Editor/releases/download/beta-v0.1.1/dist.zip', stream=True)
+            'https://mirror.ghproxy.com/https://github.com/XYCode-Kerman/ItsWA-Editor/releases/download/beta-v0.1.2/dist.zip', stream=True)
 
         fs = ited_zipfile_path.open('wb')
         for data in track(res.iter_content(chunk_size=128), '下载 ItsWA Editor 中', total=round(int(res.headers['Content-Length']) / 128)):
