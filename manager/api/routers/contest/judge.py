@@ -11,10 +11,16 @@ import judge
 
 router = APIRouter(prefix='/judge', tags=['评测管理'])
 trackIds2Results: Dict[uuid.UUID, List[ccf_parser.JudgingResult]] = {}
+judging: List[uuid.UUID] = []
 
 
 def start_judging_task(ccf: ccf_parser.CCF, trackId: uuid.UUID):
-    trackIds2Results[trackId] = judge.start_judging(ccf)
+    # trackIds2Results[trackId] = judge.start_judging(ccf)
+    trackIds2Results[trackId] = []
+    judging.append(trackId)
+    for result in judge.start_judging(ccf):
+        trackIds2Results[trackId].append(result)
+    judging.remove(trackId)
 
 
 @router.post('/start', name='开始评测', response_model=Dict[str, str], responses={
@@ -60,3 +66,8 @@ async def get_judging_result(trackId: uuid.UUID):
         raise fastapi.HTTPException(status_code=404, detail='trackId 不存在')
 
     return trackIds2Results[trackId]
+
+
+@router.get('/is_judging/{trackId}', name='获取某个比赛是否处于评测状态', response_model=bool)
+async def get_contest_is_judging(trackId: uuid.UUID):
+    return trackId in judging

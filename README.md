@@ -1,6 +1,6 @@
 # ItsWA
 
-![GitHub License](https://img.shields.io/github/license/XYCode-Kerman/ItsWA?style=flat-square)
+![GitHub License](https://img.shields.io/github/license/XYCode-Kerman/ItsWA?style=flat-square) [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-%23FE5196?logo=conventionalcommits&logoColor=white)](https://conventionalcommits.org)
 
 ![GitHub last commit (branch)](https://img.shields.io/github/last-commit/XYCode-Kerman/ItsWA/master?style=flat-square&label=Last%20Commit%20on%20Master) ![Codecov (with branch)](https://img.shields.io/codecov/c/github/XYCode-Kerman/ItsWA/master?style=flat-square&label=Coverage%20on%20Master)
 
@@ -28,6 +28,10 @@ xycode-xyc@outlook.com，获得许可后您可无视 GNU 通用公共许可证�
 本进行修改和再分发。（详情请见用户手册）
 
 ## 关于开发
+
+### 提交规范
+
+本项目自2024年4月8日起采用[**约定式提交 v1.0.0**](https://www.conventionalcommits.org/zh-hans/v1.0.0/)作为提交的格式规范，语言为**中文**，不符合提交规范的代码将会被拒绝！
 
 ### 测试结果（来自CodeCov）
 

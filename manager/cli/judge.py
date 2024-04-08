@@ -22,7 +22,8 @@ def start_judging_command(path: Annotated[Path, typer.Argument(help='比赛目�
     else:
         raise FileNotFoundError('评测目录不正确，可能是不存在CCF文件')
 
-    start_judging(ccf)
+    list(start_judging(ccf))
+
     return 0
 
 
