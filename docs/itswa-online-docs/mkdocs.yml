@@ -1,0 +1,39 @@
+site_name: ItsWA Online Documents
+site_url: http://docs.itswa.xycode.club
+
+repo_name: "XYCode-Kerman/ItsWA"
+repo_url: "https://github.com/XYCode-Kerman/ItsWA"
+edit_uri: "https://github.com/XYCode-Kerman/ItsWA"
+
+nav:
+  - 简介:
+      - Getting Started: index.md
+      - 关于 ItsWA: intro/about-itswa.md
+  - 使用:
+      - 安装: how-to-use/install.md
+  - 开发:
+      - 开发规范: develop/rules.md
+
+theme:
+  name: material
+  language: "zh"
+
+  features:
+    - navigation.tabs
+
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: white
+      accent: red
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to dark mode
+
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: blue
+      accent: blue
+      toggle:
+        icon: material/weather-night
+        name: Switch to light mode
