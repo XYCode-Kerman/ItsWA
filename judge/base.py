@@ -1,8 +1,13 @@
+import asyncio
 import datetime
 import json
+import threading
 from pathlib import Path
 from typing import *
 from typing import List
+
+import anyio
+from anyio import to_process
 
 from ccf_parser import CCF
 from ccf_parser.results import JudgingResult
@@ -11,7 +16,7 @@ from utils import judge_logger
 from .player import Player
 
 
-def start_judging(ccf: CCF) -> Generator[List[JudgingResult], Any, Any]:
+def start_judging(ccf: CCF, multi_process_judging: bool = True, judging_process: int = 24) -> Generator[List[JudgingResult], Any, Any]:
     start = datetime.datetime.now()
     judging_results: List[JudgingResult] = []
     judge_logger.info(f'开始评测比赛 {ccf.header.name}，当前时间：{start}')
@@ -29,11 +34,40 @@ def start_judging(ccf: CCF) -> Generator[List[JudgingResult], Any, Any]:
         players.append(player)
 
     # 评测
-    for player in players:
-        result = player.judging(ccf)
-        judging_results.append(result)
-        yield result
-        judge_logger.info(f'选手 {player.order} 评测完成。')
+    if not multi_process_judging:
+        for player in players:
+            result = player.judging(ccf)
+            judging_results.append(result)
+            yield result
+            judge_logger.info(f'选手 {player.order} 评测完成。')
+    else:
+        # 多进程并行
+        tasks: List[asyncio.Task] = []
+        task2player: Dict[asyncio.Task, Player] = {}
+        loop = asyncio.new_event_loop()
+        limiter = anyio.CapacityLimiter(judging_process)
+        for player in players:
+            task = loop.create_task(
+                to_process.run_sync(player.judging, ccf, limiter=limiter),
+            )
+
+            tasks.append(task)
+            task2player[task] = player
+
+        threading.Thread(target=loop.run_until_complete,
+                         args=(asyncio.wait(tasks),)).start()
+
+        # 未完成就一直检测
+        while tasks.__len__() > 0:
+            for task in tasks:
+                if task.done():
+                    result: JudgingResult = task.result()
+
+                    judge_logger.info(f'选手 {task2player[task].order} 评测完成。')
+                    yield result
+
+                    judging_results.append(result)
+                    tasks.remove(task)
 
     # 保存评测数据
     Path(ccf.header.path).joinpath('./judging_results.json').write_text(
