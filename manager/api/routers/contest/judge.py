@@ -20,6 +20,7 @@ def start_judging_task(ccf: ccf_parser.CCF, trackId: uuid.UUID):
     judging.append(trackId)
     for result in judge.start_judging(ccf):
         trackIds2Results[trackId].append(result)
+        trackIds2Results[trackId].sort(key=lambda x: x.player_order)
     judging.remove(trackId)
 
 

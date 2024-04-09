@@ -2,12 +2,14 @@ import asyncio
 import datetime
 import json
 import threading
+from multiprocessing import cpu_count
 from pathlib import Path
 from typing import *
 from typing import List
 
 import anyio
 from anyio import to_process
+from rich.progress import Progress, track
 
 from ccf_parser import CCF
 from ccf_parser.results import JudgingResult
@@ -16,21 +18,20 @@ from utils import judge_logger
 from .player import Player
 
 
-def start_judging(ccf: CCF, multi_process_judging: bool = True, judging_process: int = 24) -> Generator[List[JudgingResult], Any, Any]:
+def start_judging(ccf: CCF, multi_process_judging: bool = True, judging_process: int = cpu_count() * 2) -> Generator[List[JudgingResult], Any, Any]:
     start = datetime.datetime.now()
     judging_results: List[JudgingResult] = []
     judge_logger.info(f'开始评测比赛 {ccf.header.name}，当前时间：{start}')
 
     # 匹配选手列表
     players: List[Player] = []
-    for player_dir in ccf.header.path.joinpath('players').iterdir():
+    for player_dir in track(ccf.header.path.joinpath('players').iterdir(), description='匹配选手中...', total=len(list(ccf.header.path.joinpath('players').iterdir()))):
         player = Player(
             name=f'选手 {player_dir.name}',
             order=player_dir.name,
             path=player_dir
         )
 
-        judge_logger.info(f'匹配到选手 {player.order} 在目录 {player_dir} 下。')
         players.append(player)
 
     # 评测
@@ -58,16 +59,22 @@ def start_judging(ccf: CCF, multi_process_judging: bool = True, judging_process:
                          args=(asyncio.wait(tasks),)).start()
 
         # 未完成就一直检测
-        while tasks.__len__() > 0:
-            for task in tasks:
-                if task.done():
-                    result: JudgingResult = task.result()
+        with Progress() as progress:
+            judging_progress_task = progress.add_task(
+                description=f'评测中...', total=len(tasks))
 
-                    judge_logger.info(f'选手 {task2player[task].order} 评测完成。')
-                    yield result
+            while tasks.__len__() > 0:
+                for task in tasks:
+                    if task.done():
+                        result: JudgingResult = task.result()
 
-                    judging_results.append(result)
-                    tasks.remove(task)
+                        judge_logger.info(
+                            f'选手 {task2player[task].order} 评测完成。')
+                        yield result
+
+                        progress.advance(judging_progress_task)
+                        judging_results.append(result)
+                        tasks.remove(task)
 
     # 保存评测数据
     Path(ccf.header.path).joinpath('./judging_results.json').write_text(

@@ -56,13 +56,15 @@ def test_compile(temp_contest: Path):
 
 def test_start_juding(temp_contest: Path):
     ccf = CCF(**json.loads(temp_contest.joinpath('ccf.json').read_text('utf-8')))
-    results = list(start_judging(ccf))
 
-    # 分析
-    analyzed = ReportAnalyze(results).generate()
+    for multi_process_judging in [False, True]:
+        results = list(start_judging(ccf, multi_process_judging))
 
-    assert analyzed.find("测试点 1: AC") != -1
-    assert analyzed.find("测试点 2: WA") != -1
+        # 分析
+        analyzed = ReportAnalyze(results).generate()
+
+        assert analyzed.find("测试点 1: AC") != -1
+        assert analyzed.find("测试点 2: WA") != -1
 
 
 def test_illegal_language(ccf: CCF):

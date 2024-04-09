@@ -19,7 +19,7 @@ def init_config():  # pragma: no cover
 
 
 def _start_server():  # pragma: no cover
-    uvicorn.run(api, host="0.0.0.0", port=2568)
+    uvicorn.run(api, host="0.0.0.0", port=2568, log_level="warning")
 
 
 def start_server_background():  # pragma: no cover
