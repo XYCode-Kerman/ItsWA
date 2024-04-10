@@ -1,5 +1,7 @@
+import shutil
 import zipfile
 from pathlib import Path
+from typing import *
 from typing import Optional
 
 import requests
@@ -23,17 +25,53 @@ app.add_typer(judge_typer)
 app.add_typer(contest_typer)
 
 
+def _get_ited_artifact() -> Dict[str, Any]:
+    artifacts_resp = requests.get(
+        'https://api.github.com/repos/XYCode-Kerman/ItsWA-Editor/actions/artifacts')
+    artifact = artifacts_resp.json()['artifacts'][0]
+    return artifact
+
+
+def _get_ited_download_url():
+    manager_logger.info('获取 ItsWA Editor 下载地址中...')
+    artifact = _get_ited_artifact()
+    archive_download_url = artifact['archive_download_url']
+    manager_logger.info(f'获取到 ItsWA Editor 下载地址: {archive_download_url}')
+
+    archive_resp = requests.get(
+        archive_download_url,
+        headers={
+            # 注意：该 Token 是 XYCode-Kerman 的个人 Token，不要更改！
+            'Authorization': 'Bearer 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'
+        },
+        allow_redirects=False
+    )
+
+    if archive_resp.status_code != 302:
+        manager_logger.error(
+            f'获取 ItsWA Editor 下载地址失败: {archive_resp.status_code}')
+    else:
+        manager_logger.info(
+            f'获取到 ItsWA Editor 下载地址: {archive_resp.headers["Location"]}')
+        return archive_resp.headers["Location"]
+
+
 def download_ited():
     ited_zipfile_path = Path('./assets/ited.zip').absolute()
     ited_folder_path = Path('./assets/ited').absolute()
+    ited_artifact_now_id_file = Path('./assets/ited_id.txt')
+    ited_artifact_newest_id = _get_ited_artifact()['id']
 
-    if not ited_folder_path.exists():
-        ited_folder_path.mkdir(parents=True, exist_ok=True)
+    if not ited_folder_path.exists() or str(ited_artifact_now_id_file.read_text('utf-8') if ited_artifact_now_id_file.exists() else '') != str(ited_artifact_newest_id):
+        manager_logger.info('检测到 ItsWA Editor 需要更新，开始更新...')
+
+        shutil.rmtree(ited_folder_path.__str__(), ignore_errors=True)
         ited_zipfile_path.unlink(missing_ok=True)
-        ited_zipfile_path.touch()
 
-        res = requests.get(
-            'https://mirror.ghproxy.com/https://github.com/XYCode-Kerman/ItsWA-Editor/releases/download/beta-v0.1.2/dist.zip', stream=True)
+        ited_zipfile_path.parent.mkdir(parents=True, exist_ok=True)
+        ited_zipfile_path.touch(exist_ok=True)
+
+        res = requests.get(_get_ited_download_url(), stream=True)
 
         fs = ited_zipfile_path.open('wb')
         for data in track(res.iter_content(chunk_size=128), '下载 ItsWA Editor 中', total=round(int(res.headers['Content-Length']) / 128)):
@@ -44,6 +82,9 @@ def download_ited():
             ited_zipfile = zipfile.ZipFile(ited_zipfile_path.__str__(), 'r')
             ited_zipfile.extractall(ited_folder_path.__str__())
             ited_zipfile.close()
+
+        ited_artifact_now_id_file.write_text(
+            str(ited_artifact_newest_id), 'utf-8')
 
 
 @app.command(name='intro', help='查看ItsWA介绍')
