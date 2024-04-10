@@ -11,12 +11,21 @@ nav:
       - 关于 ItsWA: intro/about-itswa.md
   - 使用:
       - 安装: how-to-use/install.md
+      - 初始化比赛: how-to-use/init-contest.md
+      - 编辑题目: how-to-use/edit-problem.md
   - 开发:
       - 开发规范: develop/rules.md
+
+markdown_extensions:
+  - attr_list
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
 
 theme:
   name: material
   language: "zh"
+  custom_dir: ./resources
 
   features:
     - navigation.tabs
