@@ -27,33 +27,22 @@ app.add_typer(contest_typer)
 
 def _get_ited_artifact() -> Dict[str, Any]:
     artifacts_resp = requests.get(
-        'https://api.github.com/repos/XYCode-Kerman/ItsWA-Editor/actions/artifacts')
-    artifact = artifacts_resp.json()['artifacts'][0]
-    return artifact
+        'https://api.github.com/repos/XYCode-Kerman/ItsWA-Editor/releases/latest')
+    artifact = artifacts_resp.json()
+    return [
+        x
+        for x in artifact['assets']
+        if x['content_type'] == 'application/x-zip-compressed' or x['name'] == 'dist.zip'
+    ][0]
 
 
 def _get_ited_download_url():
     manager_logger.info('获取 ItsWA Editor 下载地址中...')
     artifact = _get_ited_artifact()
-    archive_download_url = artifact['archive_download_url']
-    manager_logger.info(f'获取到 ItsWA Editor 下载地址: {archive_download_url}')
+    browser_download_url = artifact['browser_download_url']
+    manager_logger.info(f'获取到 ItsWA Editor 下载地址: {browser_download_url}')
 
-    archive_resp = requests.get(
-        archive_download_url,
-        headers={
-            # 注意：该 Token 是 XYCode-Kerman 的个人 Token，不要更改！
-            'Authorization': 'Bearer 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'
-        },
-        allow_redirects=False
-    )
-
-    if archive_resp.status_code != 302:
-        manager_logger.error(
-            f'获取 ItsWA Editor 下载地址失败: {archive_resp.status_code}')
-    else:
-        manager_logger.info(
-            f'获取到 ItsWA Editor 下载地址: {archive_resp.headers["Location"]}')
-        return archive_resp.headers["Location"]
+    return browser_download_url
 
 
 def download_ited():
