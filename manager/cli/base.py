@@ -42,7 +42,7 @@ def _get_ited_download_url():
         archive_download_url,
         headers={
             # 注意：该 Token 是 XYCode-Kerman 的个人 Token，不要更改！
-            'Authorization': 'Bearer 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'
+            'Authorization': 'Bearer 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'
         },
         allow_redirects=False
     )
