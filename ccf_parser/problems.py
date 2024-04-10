@@ -18,6 +18,10 @@ class CheckPoint(BaseModel):
     output_file: Optional[pathlib.Path] = None
 
     def compare(self, output: str) -> bool:
+        # CRLF转换到LF
+        self.answer = self.answer.replace('\r\n', '\n')
+        output = output.replace('\r\n', '\n')
+
         return self.answer.strip() == output.strip()
 
 
