@@ -1,3 +1,4 @@
+import shutil
 from pathlib import Path
 from typing import Dict, List, Union
 
@@ -91,6 +92,9 @@ class Player(object):
                                     status=running_result
                                 )
                             )
+
+                    # 清理编译结果
+                    shutil.rmtree(compiled.parent, ignore_errors=True)
             else:
                 judge_logger.warning(
                     f'{problem_dir.joinpath(f"{problem.judge_config.source_file_name}.cpp").absolute()} 不存在或是不符合题目配置的编程语言。')
