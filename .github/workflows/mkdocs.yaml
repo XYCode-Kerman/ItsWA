@@ -4,7 +4,7 @@ name: Deploy Mkdocs to Pages
 on:
   # Runs on pushes targeting the default branch
   push:
-    branches: ["master", "release"]
+    branches: ["master"]
   schedule:
     - cron: '0 0 * * *'
 
