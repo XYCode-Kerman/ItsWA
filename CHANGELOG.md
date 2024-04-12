@@ -1,3 +1,17 @@
+##  0.0.2-beta.1 (2024-04-12)
+
+
+### Features
+
+* **judge:** JudgingResult新增计算属性sum_score ([f8312bf](https://github.com/XYCode-Kerman/ItsWA/commit/f8312bff70357847225000100fb1319c63430784))
+
+
+### Bug Fixes
+
+* **ccf_parser:** 错误的CKPT参数将会被自动修正 ([e6979a7](https://github.com/XYCode-Kerman/ItsWA/commit/e6979a7afbd67486d6525b36b48815d6b01f4cdc))
+* **judge:** 自动清理评测过程中产生的编译结果 ([9a7ed6c](https://github.com/XYCode-Kerman/ItsWA/commit/9a7ed6caba1b39d729611965bad4a2ee0a2afa93))
+* **manager:** 从release下载ITED ([68d8f31](https://github.com/XYCode-Kerman/ItsWA/commit/68d8f319fd31d0b5b866a3393e25828104075876))
+
 ##  0.0.2-alpha.1 (2024-04-10)
 
 
