@@ -1,7 +1,7 @@
 import pathlib
-from typing import List, Literal, Optional
+from typing import Any, List, Literal, Optional
 
-from pydantic import BaseModel
+from pydantic import BaseModel, model_validator
 
 
 class CheckPoint(BaseModel):
@@ -16,6 +16,16 @@ class CheckPoint(BaseModel):
     input_file: Optional[pathlib.Path] = None
     # 仅 output_type == FILE 时设置
     output_file: Optional[pathlib.Path] = None
+
+    @model_validator(mode='after')
+    def check_if_of(self):
+        if self.input_type == 'STDIN':
+            self.input_file = None
+
+        if self.output_type == 'STDOUT':
+            self.output_file = None
+
+        return self
 
     def compare(self, output: str) -> bool:
         # CRLF转换到LF
