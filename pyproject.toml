@@ -18,6 +18,8 @@ requests = "^2.31.0"
 pytest-html = "^4.1.1"
 dominate = "^2.9.1"
 tinydb = "^4.8.0"
+pyjwt = "^2.8.0"
+python-dotenv = "^1.0.1"
 
 
 [[tool.poetry.source]]
