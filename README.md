@@ -1,69 +1,100 @@
-# ItsWA
+<h1 align="center">
+  <a href="https://github.com/XYCode-Kerman/ItsWA">
+    <img src="docs/logo.svg" alt="Logo" width="100" height="100">
+  </a>
+</h1>
 
-![GitHub License](https://img.shields.io/github/license/XYCode-Kerman/ItsWA?style=flat-square) [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-%23FE5196?logo=conventionalcommits&logoColor=white)](https://conventionalcommits.org)
+<div align="center">
+  ItsWA
+  <br />
+  <a href="#about"><strong>查看使用效果</strong></a>
+  <br />
+  <br />
+  <a href="https://github.com/XYCode-Kerman/ItsWA/issues/new?assignees=&labels=bug&template=01_BUG_REPORT.md&title=bug%3A+">Report a Bug</a>
+  ·
+  <a href="https://github.com/XYCode-Kerman/ItsWA/issues/new?assignees=&labels=enhancement&template=02_FEATURE_REQUEST.md&title=feat%3A+">Request a Feature</a>
+  .
+  <a href="https://github.com/XYCode-Kerman/ItsWA/issues/new?assignees=&labels=question&template=04_SUPPORT_QUESTION.md&title=support%3A+">Ask a Question</a>
+</div>
+
+![GitHub License](https://img.shields.io/github/license/XYCode-Kerman/ItsWA?style=flat-square) [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-%23FE5196?logo=conventionalcommits&logoColor=white&style=flat-square)](https://conventionalcommits.org)
 
 ![GitHub last commit (branch)](https://img.shields.io/github/last-commit/XYCode-Kerman/ItsWA/master?style=flat-square&label=Last%20Commit%20on%20Master) ![Codecov (with branch)](https://img.shields.io/codecov/c/github/XYCode-Kerman/ItsWA/master?style=flat-square&label=Coverage%20on%20Master)
 
 ![GitHub last commit (branch)](https://img.shields.io/github/last-commit/XYCode-Kerman/ItsWA/develop?style=flat-square&label=Last%20Commit%20on%20Develop) ![Codecov (with branch)](https://img.shields.io/codecov/c/github/XYCode-Kerman/ItsWA/develop?style=flat-square&label=Coverage%20on%20Develop)
 
-ItsWA是一个基于`Python`搭建，使用`Lrun`提供安全运行时的`Linux`下的竞赛代码评测系统。
+</div>
 
-## 使用教程
+---
 
-ItsWA提供一个基于Latex编写的用户手册，在本项目的`docs/`中。
+## 关于
 
-同时我们也提供一个更加全面的在线文档[ItsWA Online Documents](https://docs.itswa.xycode.club/)。
+ItsWA是一个基于Python实现的代码评测系统，使用`Lrun`提供安全运行时。并且所有比赛信息均存储在`ccf.json`中，方便在各个计算机间的移动。
 
-## 关于CCF
+作为ItsWA的姊妹项目，[ItsWA-Editor](https://github.com/XYCode-Kerman/ItsWA-Editor/)（简称ITED）实现了一个在**前端**的GUI，通过访问ItsWA-API的方式实现了对比赛的远程管理（即可以远程操作评测机进行评测）。
 
-在本程序语境下，CCF指的是`Contest Config File`（比赛配置文件）而非**中国计算机学会**，本软件及其开发者与**中国计算机学会**之间没有任何关联！
+|                          ITED的首页                          |                         ITED评测结果                         |
+| :----------------------------------------------------------: | :----------------------------------------------------------: |
+| ![image-20240415134229646](./docs/images/image-20240415134229646.png) | ![image-20240415134359382](./docs/images/image-20240415134359382.png) |
 
-## 许可证声明
+### 技术栈
 
-GNU 通用公共许可证是传染性协议，这意味着所有使用到 ItsWA 或基于 ItsWA 修改的程序应当
-使用相同的许可证并开放源代码。
+* Python
+  * Pydantic
+  * AsyncIO
+  * FastAPI
+* Linux
+  * Lrun（WIP）
 
-但是根据本软件作者的意愿，如果您有修改本软件并闭源的需求，请依照下方的模板，发送一份申请到
-xycode-xyc@outlook.com，获得许可后您可无视 GNU 通用公共许可证中的条款来对本软件的某一版
-本进行修改和再分发。（详情请见用户手册）
+## 开始
 
-## 关于开发
+查看[Getting Started - ItsWA Online Documents](https://docs.itswa.xycode.club/)。
 
-### 提交规范
+## 使用
 
-本项目自2024年4月8日起采用[**约定式提交 v1.0.0**](https://www.conventionalcommits.org/zh-hans/v1.0.0/)作为提交的格式规范，语言为**中文**，不符合提交规范的代码将会被拒绝！
+查看[安装 - ItsWA Online Documents](https://docs.itswa.xycode.club/how-to-use/install/)。
 
-### 测试结果（来自CodeCov）
+## 开发路线图
 
-![codecov.io/gh/XYCode-Kerman/ItsWA/graphs/icicle.svg?token=8knjccNoca](https://codecov.io/gh/XYCode-Kerman/ItsWA/graphs/icicle.svg?token=8knjccNoca)
+在 [open issues](https://github.com/XYCode-Kerman/ItsWA/issues) 中列出了我们将会修复的bug和将会新增的功能。
 
-### Work-In-Progress
+## 寻求帮助
 
-本项目正处于开发状态，请勿将其用于正式比赛的评测！我们不保证评测结果始终是正确的。
+通过如下方式，可以向我们寻求帮助
 
-以下是本项目已经完成的功能。
+- 查看已解决的 Issue。
+- 发起一个新的 Github Issue。
 
-- [x] CCF的解析器
-- [ ] CCF的UI编辑器
-- [x] 不良代码过滤器
-  - [x] CPP支持
-  - [ ] C支持
-- [x] 评测
-  - [ ] 语言
-    - [x] CPP
-    - [ ] C
-  - [x] 测试点
-    - [x] STDIN/STDOUT
-    - [x] FILE
-  - [ ] 测试点状态支持
-    - [x] AC
-    - [x] CE
-    - [x] WA
-    - [x] RE
-    - [x] TLE
-    - [ ] MLE
-    - [ ] OLE
-  - [ ] 安全防护
-    - [x] 代码过滤
-    - [ ] 系统调用防护
+## 帮助开发
 
+为了帮助我们的开发，您可以做以下几件事：
+
+- 给我们的项目点一个 [Star](https://github.com/XYCode-Kerman/ItsWA)。
+- 向其他OIer、教练或非正式赛事组织方推荐ItsWA。
+- 在[Issue](https://github.com/XYCode-Kerman/ItsWA/issues)中向我们提起新功能建议或报告已知的Bug。
+- 根据[开发规范](https://docs.itswa.xycode.club/develop/rules/)编写贡献代码，并提起[Pull Request](https://github.com/XYCode-Kerman/ItsWA/pulls)，将其合并到我们的项目中。
+
+## 开发者
+
+本项目目前由 [XYCode Kerman](https://github.com/XYCode-Kerman) 一个人**独立制作**完成。
+
+在 [the contributors page](https://github.com/XYCode-Kerman/ItsWA/contributors) 查看所有的贡献者。
+
+## 安全
+
+ItsWA无法保证我们的代码中没有安全漏洞，因此请您自行做好安全措施，包括但不限于以下几点：
+
+1. 不要将ItsWA Management API暴露到公网中。
+2. 不要直接将ItsWA Online Judge API暴露到公网中，使用Zerotier等服务实现有限的服务共享。
+3. 不要用ItsWA Built-in Online Judge来搭建公共OJ。
+4. 确保你可以在线下找到所有选手，如果他们的代码损坏了评测机，请**立即**要求他们进行赔偿！
+
+如果您在Review Code过程中发现了任何安全问题，**请勿**擅自将其公开，而应立即将安全问题发送到xycode-xyc@outlook.com以获取我们的技术支持。当您获得我们的允许后，方可公开该问题。
+
+## 许可证
+
+本项目的许可证是 **GPL v3**。
+
+> GNU 通用公共许可证是传染性协议，这意味着所有使用到 ItsWA 或基于 ItsWA 修改的程序应当 使用相同的许可证并开放源代码。
+>
+> 但是根据本软件作者的意愿，如果您有修改本软件并闭源的需求，请依照下方的模板，发送一份申请到 [xycode-xyc@outlook.com](mailto:xycode-xyc@outlook.com)，获得许可后您可无视 GNU 通用公共许可证中的条款来对本软件的某一版 本进行修改和再分发。（详情请见用户手册）
