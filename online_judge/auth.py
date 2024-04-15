@@ -18,10 +18,12 @@ apikey_schema = APIKeyCookie(name='itswa-oj-apikey')
 
 def get_apikey_decoded(apikey: Optional[str] = Depends(apikey_schema)) -> Dict[Any, Any]:
     if not apikey:
-        raise HTTPException(status_code=401, detail="请提供API Key")
+        raise HTTPException(
+            status_code=401, detail="请提供API Key")
 
     try:
-        decoded = jwt.decode(apikey, algorithms=['HS256'])
+        decoded = jwt.decode(
+            apikey, key=os.environ['SECRET'], algorithms=['HS256'])
     except jwt.DecodeError:
         raise HTTPException(status_code=401, detail="API Key无效")
     except jwt.ExpiredSignatureError:
