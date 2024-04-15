@@ -1,1 +1,1 @@
-from .database import db, usercol
+from .database import contestscol, db, usercol
