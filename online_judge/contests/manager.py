@@ -10,12 +10,12 @@ from tinydb import Query
 
 import ccf_parser
 
-from .auth import require_role
-from .oj_models import OJContest
-from .utils import contestscol
-from .utils.dependencies import require_ccf_file
+from ..auth import require_role
+from ..oj_models import OJContest
+from ..utils import contestscol
+from ..utils.dependencies import require_ccf_file
 
-router = APIRouter(prefix='/contests', tags=['比赛'])
+router = APIRouter(prefix='/manage')
 
 
 @router.get('/', name='获取注册在 OJ 中的比赛', response_model=List[OJContest])
