@@ -1,3 +1,22 @@
+##  HEAD (2024-04-15)
+
+
+### ⚠ BREAKING CHANGES
+
+* **online_judge:** 将OJ相关配置从ccf_parser移动到online_judge内
+
+### Features
+
+* 用户鉴权 ([8e6d02b](https://github.com/XYCode-Kerman/ItsWA/commit/8e6d02b205e1a9f3ba3a836fcb169bb5ecb2c703))
+* **oj:** 实现oj的用户管理 ([7e94ec6](https://github.com/XYCode-Kerman/ItsWA/commit/7e94ec6c4b1c1cb03170d4ad9dbbb284c8240f56))
+* **online_judge:** 比赛管理 ([ede3426](https://github.com/XYCode-Kerman/ItsWA/commit/ede3426987313774bb2eb84e4a9cd084dd4d41a6))
+* **online_judge:** 将OJ相关配置从ccf_parser移动到online_judge内 ([2623008](https://github.com/XYCode-Kerman/ItsWA/commit/26230083b31f31334e47b55e53d8257c6ae33054))
+
+
+### Bug Fixes
+
+* **online_judge:** 获取解密apikey失败的问题 ([882c497](https://github.com/XYCode-Kerman/ItsWA/commit/882c497008c8f147c0993fa9c537c1f3f4d64642))
+
 ##  0.0.2-beta.1 (2024-04-12)
 
 
