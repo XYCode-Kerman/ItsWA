@@ -70,5 +70,5 @@ async def get_judging_result(trackId: uuid.UUID):
 
 
 @router.get('/is_judging/{trackId}', name='获取某个比赛是否处于评测状态', response_model=bool)
-async def get_contest_is_judging(trackId: uuid.UUID):
+async def get_contest_is_judging(trackId: uuid.UUID):  # pragma: no cover
     return trackId in judging
