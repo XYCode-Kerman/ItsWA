@@ -1,4 +1,5 @@
 import shutil
+import time
 import zipfile
 from pathlib import Path
 from typing import *
@@ -13,6 +14,7 @@ from rich.panel import Panel
 from rich.progress import track
 from rich.text import Text
 
+from online_judge import start_oj_background
 from utils import manager_logger
 
 from ..base import _start_server, start_server_background
@@ -90,8 +92,16 @@ ItsWA是一个基于Python搭建，使用`Lrun`提供安全运行时的Linux下�
 
 
 @app.command(name='server')
-def start_server_command():  # pragma: no cover
-    download_ited()
+def start_server_command(manager: bool = True, oj: bool = True):  # pragma: no cover
+    if manager:
+        download_ited()
 
-    manager_logger.info('访问 http://localhost:2568/editor 以访问ItsWA Manager。')
-    _start_server()
+        manager_logger.info(
+            '访问 http://localhost:2568/editor 以访问ItsWA Manager。')
+        start_server_background()
+
+    if oj:
+        start_oj_background()
+
+    while True:
+        time.sleep(10**9)

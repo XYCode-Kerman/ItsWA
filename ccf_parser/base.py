@@ -1,5 +1,5 @@
 import pathlib
-from typing import List, Literal
+from typing import List, Literal, Optional
 
 from pydantic import BaseModel
 
@@ -11,7 +11,6 @@ class CCFHeader(BaseModel):
     path: pathlib.Path
     description: str
     contest_type: Literal['OI', 'IOI']
-    enable_oj: bool
 
 
 class Contest(BaseModel):
