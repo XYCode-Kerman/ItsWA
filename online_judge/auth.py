@@ -54,6 +54,16 @@ def get_token(user: User) -> str:
     )
 
 
+def require_role(roles: List[str] = ['default']) -> Callable[[User], User]:
+    def wrapper(user: User = Depends(get_user)) -> User:
+        if user.role not in roles:
+            raise HTTPException(status_code=403, detail="不符合权限要求")
+
+        return user
+
+    return wrapper
+
+
 @router.post('/login', name='登录', responses={
     200: {
         "description": "登录成功",
