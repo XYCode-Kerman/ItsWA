@@ -9,7 +9,7 @@ from fastapi import APIRouter, Body, Depends, HTTPException
 from fastapi.security import APIKeyCookie
 from tinydb import Query
 
-from .models.user import User
+from .oj_models.user import User
 from .utils import usercol
 
 router = APIRouter(prefix='/auth', tags=['用户验证'])
