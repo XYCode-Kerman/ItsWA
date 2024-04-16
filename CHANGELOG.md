@@ -1,8 +1,11 @@
-##  HEAD (2024-04-15)
+## 0.0.3-alpha.1 (2024-04-16)
 
 
 ### ⚠ BREAKING CHANGES
 
+* **online_judge:** 比赛管理的API结构
+* **online_judge:** 修改比赛管理的API结构
+* **online_judge:** 比赛管理的API结构
 * **online_judge:** 将OJ相关配置从ccf_parser移动到online_judge内
 
 ### Features
@@ -10,12 +13,21 @@
 * 用户鉴权 ([8e6d02b](https://github.com/XYCode-Kerman/ItsWA/commit/8e6d02b205e1a9f3ba3a836fcb169bb5ecb2c703))
 * **oj:** 实现oj的用户管理 ([7e94ec6](https://github.com/XYCode-Kerman/ItsWA/commit/7e94ec6c4b1c1cb03170d4ad9dbbb284c8240f56))
 * **online_judge:** 比赛管理 ([ede3426](https://github.com/XYCode-Kerman/ItsWA/commit/ede3426987313774bb2eb84e4a9cd084dd4d41a6))
+* **online_judge:** 比赛管理的API结构 ([9a93548](https://github.com/XYCode-Kerman/ItsWA/commit/9a935488e31f197f618f970ec4a5547ffdce477c))
+* **online_judge:** 从OJ获取题目 ([574d45e](https://github.com/XYCode-Kerman/ItsWA/commit/574d45efa75a16cedffb97085d2ef8c0a00c599d))
 * **online_judge:** 将OJ相关配置从ccf_parser移动到online_judge内 ([2623008](https://github.com/XYCode-Kerman/ItsWA/commit/26230083b31f31334e47b55e53d8257c6ae33054))
 
 
 ### Bug Fixes
 
 * **online_judge:** 获取解密apikey失败的问题 ([882c497](https://github.com/XYCode-Kerman/ItsWA/commit/882c497008c8f147c0993fa9c537c1f3f4d64642))
+
+
+### Code Refactoring
+
+* **online_judge:** 比赛管理的API结构 ([a55fdaa](https://github.com/XYCode-Kerman/ItsWA/commit/a55fdaaf55fdd949bb812e22113f5f224032eca7))
+* **online_judge:** 修改比赛管理的API结构 ([ea283c9](https://github.com/XYCode-Kerman/ItsWA/commit/ea283c9a75840ccb738fa8279ebad1df606d40b8))
+
 
 ##  0.0.2-beta.1 (2024-04-12)
 
