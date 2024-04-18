@@ -26,6 +26,16 @@ class OJContest(BaseModel):
         data = self.ccf_file.read_text('utf-8')
         return CCF.model_validate_json(data)
 
+    @computed_field
+    @property
+    def name(self) -> str:
+        return self.read_ccf.header.name
+
+    @computed_field
+    @property
+    def description(self) -> str:
+        return self.read_ccf.header.description
+
 
 class OJProblem(BaseModel):
     """有别于 ccf_parser 中的 Problem，更加详细的题目信息需要从 ccf_parser 中获取"""
