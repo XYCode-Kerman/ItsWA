@@ -1,45 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg id="_图层_1" data-name="图层 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024.9999998621 1025">
+<svg id="_图层_1" data-name=" 图层 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1025 1025">
   <defs>
     <style>
       .cls-1 {
-        font-size: 24px;
+        font-family: SimHei, SimHei;
+        font-size: 88.61px;
       }
 
-      .cls-1, .cls-2, .cls-3, .cls-4 {
+      .cls-1, .cls-2, .cls-3, .cls-4, .cls-5, .cls-6 {
+        isolation: isolate;
+      }
+
+      .cls-1, .cls-2, .cls-4, .cls-5, .cls-6 {
         fill: #fff;
       }
 
-      .cls-1, .cls-3 {
+      .cls-2 {
+        font-size: 231.63px;
+      }
+
+      .cls-2, .cls-5, .cls-6 {
         font-family: Consolas, Consolas;
       }
 
-      .cls-5 {
+      .cls-4 {
+        font-family: CascadiaMono-Regular, 'Cascadia Mono';
+        font-size: 35.44px;
+        font-variation-settings: 'wght' 400;
+      }
+
+      .cls-7 {
         fill: #e74c3c;
         stroke: #231815;
         stroke-miterlimit: 10;
       }
 
-      .cls-2 {
-        font-family: CascadiaMono-Regular, 'Cascadia Mono';
-        font-size: 32px;
-        font-variation-settings: 'wght' 400;
+      .cls-5 {
+        font-size: 34.63px;
       }
 
-      .cls-3 {
-        font-size: 142.8128662109px;
-      }
-
-      .cls-4 {
-        font-family: SimHei, SimHei;
-        font-size: 52.3967819214px;
+      .cls-6 {
+        font-size: 39.99px;
       }
     </style>
   </defs>
-  <rect class="cls-5" x=".5" y=".5" width="1023.9999998621" height="1024"/>
-  <text class="cls-4" transform="translate(30.301513534 74.9206542969)"><tspan x="0" y="0">#1</tspan></text>
-  <text class="cls-3" transform="translate(316.2019270471 546.8439941406)"><tspan x="0" y="0">ItsWA</tspan></text>
-  <text class="cls-2" transform="translate(90.6251829675 611.7496032715)"><tspan x="0" y="0">A Python-based OI Competition Judge for Linux</tspan></text>
-  <text class="cls-1" transform="translate(12.4999998621 1005.24609375)"><tspan x="0" y="0">Built-in Online Judge</tspan></text>
-  <text class="cls-1" transform="translate(695.812072616 984.4463195801)"><tspan x="0" y="0">Faster and more Security</tspan><tspan x="158.34375" y="28.7998046875">than Arbiter</tspan></text>
+  <rect class="cls-7" x=".5" y=".5" width="1024" height="1024"/>
+  <g class="cls-3">
+    <text class="cls-1" transform="translate(30.3 106.04)"><tspan x="0" y="0">#1</tspan></text>
+  </g>
+  <g class="cls-3">
+    <text class="cls-2" transform="translate(194.13 572.36)"><tspan x="0" y="0">ItsWA</tspan></text>
+  </g>
+  <g class="cls-3">
+    <text class="cls-4" transform="translate(45.31 625.95)"><tspan x="0" y="0">A Python-based OI Competition Judge for Linux</tspan></text>
+  </g>
+  <g class="cls-3">
+    <text class="cls-6" transform="translate(12.5 1000.41)"><tspan x="0" y="0">Built-in Online Judge</tspan></text>
+  </g>
+  <g class="cls-3">
+    <text class="cls-5" transform="translate(555.61 968.48)"><tspan x="0" y="0">Faster and more Security</tspan></text>
+    <text class="cls-5" transform="translate(784.05 1010.04)"><tspan x="0" y="0">than Arbiter</tspan></text>
+  </g>
 </svg>
