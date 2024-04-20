@@ -36,6 +36,11 @@ class OJContest(BaseModel):
     def description(self) -> str:
         return self.read_ccf.header.description
 
+    @computed_field
+    @property
+    def problem_count(self) -> int:
+        return len(self.read_ccf.contest.problems)
+
 
 class OJProblem(BaseModel):
     """有别于 ccf_parser 中的 Problem，更加详细的题目信息需要从 ccf_parser 中获取"""
