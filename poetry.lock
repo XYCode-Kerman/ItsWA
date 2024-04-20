@@ -180,6 +180,25 @@ url = "https://pypi.tuna.tsinghua.edu.cn/simple"
 reference = "mirrors"
 
 [[package]]
+name = "asyncer"
+version = "0.0.5"
+description = "Asyncer, async and await, focused on developer experience."
+optional = false
+python-versions = ">=3.8,<4.0"
+files = [
+    {file = "asyncer-0.0.5-py3-none-any.whl", hash = "sha256:ba06d6de3c750763868dffacf89b18d40b667605b0241d31c2ee43f188e2ab74"},
+    {file = "asyncer-0.0.5.tar.gz", hash = "sha256:2979f3e04cbedfe5cfeb79027dcf7d004fcc4430a0ca0066ae20490f218ec06e"},
+]
+
+[package.dependencies]
+anyio = ">=3.4.0,<5.0"
+
+[package.source]
+type = "legacy"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+reference = "mirrors"
+
+[[package]]
 name = "attrs"
 version = "23.2.0"
 description = "Classes Without Boilerplate"
@@ -2111,4 +2130,4 @@ reference = "mirrors"
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<4.0"
-content-hash = "f16126ccbbca1639e2117b92a9b33613105a0563df7fed581399840d8076ec80"
+content-hash = "05c4e2081fb4744c858da8b9a49b9d8717f37fd0d3fe60bc7332834da360f56b"

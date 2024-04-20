@@ -6,9 +6,9 @@ import pydantic
 from fastapi import Depends, HTTPException
 from tinydb import Query
 
-from ccf_parser import CCF
+from ccf_parser import CCF, Problem
 
-from ...oj_models import OJContest
+from ...oj_models import OJContest, OJProblem
 from ..database import contestscol
 
 
@@ -50,3 +50,13 @@ def require_contest_started(contest: OJContest = Depends(require_oj_contest)) ->
         raise HTTPException(status_code=403, detail="比赛未开始")
 
     return contest
+
+
+def require_contest_problem(problem_id: uuid.UUID, contest: OJContest = Depends(require_contest_started)) -> Problem:
+    problems = contest.read_ccf.contest.problems
+
+    for problem in problems:
+        if OJProblem.load_from_ccf_problem(problem).problem_id == problem_id:
+            return problem
+
+    raise HTTPException(status_code=404, detail="题目不存在")

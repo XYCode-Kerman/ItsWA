@@ -13,14 +13,14 @@ app.include_router(contests_router)
 app.include_router(auth_router)
 
 
-def _start_oj():  # proagma: no cover
+def _start_oj(workers: int):  # proagma: no cover
     logger.info('Online Judge API 启动, 地址 http://0.0.0.0:6572/')
     uvicorn.run('online_judge:oj_app', host="0.0.0.0", port=6572,
-                workers=6, log_level='info')
+                workers=workers, log_level='info')
 
 
-def start_oj_background():  # pragma: no cover
-    process = multiprocessing.Process(target=_start_oj)
+def start_oj_background(workers: int):  # pragma: no cover
+    process = multiprocessing.Process(target=_start_oj, args=(workers,))
     process.start()
 
     return process
