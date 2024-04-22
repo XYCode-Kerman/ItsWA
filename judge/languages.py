@@ -14,6 +14,7 @@ class Language(abc.ABC):
         self.name: str = 'Language Name'
         self.compiler: str = 'Compiler Command'
         self.compile_options: List[str] = ['Option 1', 'Option 2']
+        self.suffix = ''
 
     @abc.abstractmethod
     def compile(self, source: pathlib.Path, output: pathlib.Path) -> bool:
@@ -24,6 +25,7 @@ class CPP(Language):
     def __init__(self) -> None:
         super().__init__()
         self.name = 'CPP'
+        self.suffix = 'cpp'
         self.compiler = 'g++'
         self.compile_options = ['-O2', '-std=c++14']
         self.filter = CPPFilter()

@@ -78,14 +78,18 @@ def require_role(roles: List[str] = ['default']) -> Callable[[User], User]:
         }
     }
 })
-async def user_login(username: Annotated[str, Body()], password: Annotated[str, Body()]):
+async def user_login(username: Annotated[str, Body()], password: Annotated[str, Body()], response: fastapi.Response):
     User_Query = Query()
     results = usercol.search(User_Query.username ==
                              username and User_Query.password == password)
 
     if results.__len__() >= 1:
+        token = get_token(User.model_validate(results[0]))
+        response.set_cookie('itswa-oj-apikey', token,
+                            expires=datetime.datetime.now(tz=datetime.UTC) + datetime.timedelta(days=7), httponly=True)
+
         return {
-            'token': get_token(User.model_validate(results[0]))
+            'token': token
         }
     else:
         raise HTTPException(status_code=401, detail="用户名或密码错误")

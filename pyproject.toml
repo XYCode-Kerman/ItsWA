@@ -20,6 +20,7 @@ dominate = "^2.9.1"
 tinydb = "^4.8.0"
 pyjwt = "^2.8.0"
 python-dotenv = "^1.0.1"
+asyncer = "^0.0.5"
 
 
 [[tool.poetry.source]]
