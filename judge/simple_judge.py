@@ -25,7 +25,7 @@ def simple_judging(code: str, language: Language, checkpoints: List[CheckPoint])
     if compile_result is False or compiled_path.exists() is False:
         for ckpt in checkpoints:
             ckpt_result = CheckPointResult(
-                ckpt=ckpt, score=0, status=Status.CompileError)
+                ckpt=ckpt, score=0, status=Status.CompileError, output='')
             yield ckpt_result
             results.append(ckpt_result)
         return results
@@ -40,13 +40,14 @@ def simple_judging(code: str, language: Language, checkpoints: List[CheckPoint])
         if isinstance(output, str):
             if ckpt.compare(output):
                 ckpt_result = CheckPointResult(
-                    ckpt=ckpt, score=ckpt.ckpt_score, status=Status.Accepted)
+                    ckpt=ckpt, score=ckpt.ckpt_score, status=Status.Accepted, output=output)
             else:
                 ckpt_result = CheckPointResult(
-                    ckpt=ckpt, score=0, status=Status.WrongAnswer)
+                    ckpt=ckpt, score=0, status=Status.WrongAnswer, output=output)
         # 运行失败
         else:
-            ckpt_result = CheckPointResult(ckpt=ckpt, score=0, status=output)
+            ckpt_result = CheckPointResult(
+                ckpt=ckpt, score=0, status=Status.RuntimeError, output=output)
 
         yield ckpt_result
         results.append(ckpt_result)
