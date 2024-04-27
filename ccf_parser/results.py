@@ -11,6 +11,7 @@ class CheckPointResult(BaseModel):
     ckpt: CheckPoint
     score: int
     status: Status
+    output: str
 
 
 class JudgingResult(BaseModel):

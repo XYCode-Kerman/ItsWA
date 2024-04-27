@@ -53,7 +53,8 @@ class Player(object):
                             CheckPointResult(
                                 ckpt=ckpt,
                                 score=0,
-                                status=Status.CompileError
+                                status=Status.CompileError,
+                                output=''
                             )
                         )
                 else:
@@ -73,7 +74,8 @@ class Player(object):
                                     CheckPointResult(
                                         ckpt=ckpt,
                                         score=ckpt.ckpt_score,
-                                        status=Status.Accepted
+                                        status=Status.Accepted,
+                                        output=running_result
                                     )
                                 )
                             else:
@@ -81,7 +83,8 @@ class Player(object):
                                     CheckPointResult(
                                         ckpt=ckpt,
                                         score=0,
-                                        status=Status.WrongAnswer
+                                        status=Status.WrongAnswer,
+                                        output=running_result
                                     )
                                 )
                         else:
@@ -89,7 +92,8 @@ class Player(object):
                                 CheckPointResult(
                                     ckpt=ckpt,
                                     score=0,
-                                    status=running_result
+                                    status=running_result,
+                                    output=''
                                 )
                             )
 
@@ -103,7 +107,8 @@ class Player(object):
                         CheckPointResult(
                             ckpt=ckpt,
                             score=0,
-                            status=Status.CompileError
+                            status=Status.CompileError,
+                            output=''
                         )
                     )
 
