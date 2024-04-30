@@ -47,7 +47,7 @@ def simple_judging(code: str, language: Language, checkpoints: List[CheckPoint])
         # 运行失败
         else:
             ckpt_result = CheckPointResult(
-                ckpt=ckpt, score=0, status=Status.RuntimeError, output=output)
+                ckpt=ckpt, score=0, status=output, output='')
 
         yield ckpt_result
         results.append(ckpt_result)
