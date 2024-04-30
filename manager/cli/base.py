@@ -92,7 +92,7 @@ ItsWA是一个基于Python搭建，使用`Lrun`提供安全运行时的Linux下�
 
 
 @app.command(name='server')
-def start_server_command(manager: bool = True, oj: bool = True, oj_workers: int = 6):  # pragma: no cover
+def start_server_command(manager: bool = True, oj: bool = True):  # pragma: no cover
     if manager:
         download_ited()
 
@@ -101,7 +101,7 @@ def start_server_command(manager: bool = True, oj: bool = True, oj_workers: int 
         start_server_background()
 
     if oj:
-        start_oj_background(oj_workers)
+        start_oj_background(1)
 
     while True:
         time.sleep(10**9)
