@@ -55,7 +55,7 @@ def test_compile(temp_contest: Path):
     ) == False
 
 
-def test_start_juding(temp_contest: Path):
+def test_start_judging(temp_contest: Path):
     ccf = CCF(**json.loads(temp_contest.joinpath('ccf.json').read_text('utf-8')))
 
     for multi_process_judging in [False, True]:
@@ -111,7 +111,7 @@ def test_simple_runtime():
         '',
         input_type,
         pathlib.Path('/tmp/a.in')
-    ) == Status.RuntimeError
+    )[0] == Status.RuntimeError
 
 
 # def test_safety_runtime_with_lrun():
