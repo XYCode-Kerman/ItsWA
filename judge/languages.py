@@ -66,8 +66,11 @@ class CPP(Language):
 
         if process.returncode != 0:
             judge_logger.warning(f'编译 {source} 失败，返回值为 {process.returncode}')
-            # 写入日志
-            source.joinpath('compiler.error.log').write_bytes(process.stdout)
+
+            if process.stdout:
+                # 写入日志
+                source.joinpath('compiler.error.log').write_bytes(
+                    process.stdout)
 
             return False
         elif not output.exists():
