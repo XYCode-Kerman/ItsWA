@@ -87,21 +87,21 @@ def test_simple_runtime():
             '',
             input_type,
             pathlib.Path('a.in')
-        )[0] == Status.TimeLimitExceeded
+        ) == Status.TimeLimitExceeded
 
         assert simple_runtime(
             pathlib.Path('./tests/environment/executeables_to_test/re'),
             '',
             input_type,
             pathlib.Path('a.in')
-        )[0] == Status.RuntimeError
+        ) == Status.RuntimeError
 
         assert type(simple_runtime(
             pathlib.Path('./tests/environment/executeables_to_test/ac'),
             '',
             input_type,
             pathlib.Path('a.in')
-        )[0]) in [Status, str]
+        )) in [Status, str]
 
     assert simple_runtime(
         pathlib.Path('./tests/environment/executeables_to_test/ac'),
