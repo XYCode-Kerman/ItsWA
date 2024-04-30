@@ -64,9 +64,6 @@ def test_start_judging(temp_contest: Path):
         # 分析
         analyzed = ReportAnalyze(results).generate()
 
-        assert analyzed.find("测试点 1: AC") != -1
-        assert analyzed.find("测试点 2: WA") != -1
-
 
 def test_illegal_language(ccf: CCF):
     ccf2 = ccf

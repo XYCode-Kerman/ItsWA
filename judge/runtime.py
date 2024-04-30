@@ -1,7 +1,11 @@
 import os
 import pathlib
 import subprocess
-from typing import Literal, Union
+import threading
+from typing import Literal, Tuple, Union
+
+import psutil
+import psutil._common
 
 from ccf_parser.status import Status
 from utils import judge_logger
@@ -20,39 +24,60 @@ class SimpleRuntime(object):
 
         executeable_file.chmod(0o700)
 
-    def __call__(self, executeable_file: pathlib.Path, input_content: str, input_type: Literal['STDIN', 'FILE'], file_input_path: pathlib.Path = None, timeout: float = 1.0) -> Union[str, Status]:
+    def __call__(self, executeable_file: pathlib.Path, input_content: str, input_type: Literal['STDIN', 'FILE'], file_input_path: pathlib.Path = None, timeout: float = 1.0) -> Tuple[Union[str, Status], float]:
         """返回 STDOUT（STDOUT 无输出时返回第一个后缀为 .out 的文件的内容）"""
         if self.calling_precheck(executeable_file, input_content, input_type, file_input_path, timeout) is False:
-            return Status.RuntimeError
+            return Status.RuntimeError, 0
 
-        if input_type == 'STDIN':
-            process = self.stdin_executor(executeable_file)
-            try:
-                stdout, stderr = process.communicate(
-                    input_content.encode('utf-8'), timeout=timeout)
+        # 监测数据
+        process_cpu_time: psutil._common.pcputimes = psutil._common.pcputimes(
+            user=-1, system=-1, children_user=-1, children_system=-1)
+        signal = True
 
-                if process.returncode != 0:
-                    return Status.RuntimeError
-
-                return stdout.decode('utf-8')
-            except subprocess.TimeoutExpired:
-                return Status.TimeLimitExceeded
-        else:
-            process = self.file_input_executor(
-                executeable_file, file_input_path, input_content)
-
-            try:
-                process.wait(timeout)
-
-                if process.returncode != 0:
-                    return Status.RuntimeError
-
+        # 监测器
+        def _watcher():
+            nonlocal process_cpu_time, signal
+            while signal and psutil_process.is_running():
                 try:
-                    return executeable_file.with_name(file_input_path.name).with_suffix('.out').read_text(encoding='utf-8')
-                except:
-                    return Status.WrongAnswer
-            except subprocess.TimeoutExpired:
-                return Status.TimeLimitExceeded
+                    process_cpu_time = psutil_process.cpu_times()
+                except psutil.NoSuchProcess:
+                    return
+
+        # 运行
+        process = self.stdin_executor(executeable_file)
+        psutil_process = psutil.Process(process.pid)
+
+        watcher_thread = threading.Thread(target=_watcher)
+        watcher_thread.start()
+
+        try:
+            if input_type == 'STDIN':  # 标准输入
+                stdout, stderr = self.stdin_communicate(
+                    process, input_content, timeout=timeout)
+            elif input_type == 'FILE':  # 文件输入
+                stdout, stderr = self.file_communicate(
+                    process, input_content, file_input_path, file_input_path.with_suffix('.out'), timeout=timeout)
+
+            stdout: str = stdout.decode('utf-8')
+            stderr: str = stderr.decode('utf-8')
+        except subprocess.TimeoutExpired:
+            return Status.TimeLimitExceeded, process_cpu_time.user + process_cpu_time.system  # 返回 CPU 时间
+        finally:
+            signal = False  # 释放监测器
+
+        if process.returncode != 0:
+            return Status.RuntimeError, 0
+
+        # 返回 STDOUT, CPU 时间
+        return stdout, process_cpu_time.user + process_cpu_time.system
+
+    def stdin_communicate(self, process: subprocess.Popen[bytes], input_content: str, timeout: float):
+        return process.communicate(input_content.encode('utf-8'), timeout=timeout)
+
+    def file_communicate(self, process: subprocess.Popen[bytes], input_content: str, file_input_path: pathlib.Path, output_file_path: pathlib.Path, timeout: float) -> Tuple[bytes, bytes]:
+        process.wait(timeout=timeout)
+
+        return output_file_path.read_bytes() if output_file_path.exists() else b'', b''
 
     def file_input_executor(self, executeable_file: pathlib.Path, file_input_path: pathlib.Path, input_content: str) -> subprocess.Popen[bytes]:
         executeable_file.parent.joinpath(file_input_path).write_text(

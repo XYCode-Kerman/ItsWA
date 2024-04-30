@@ -32,8 +32,8 @@ def simple_judging(code: str, language: Language, checkpoints: List[CheckPoint])
 
     # 评测
     for ckpt in checkpoints:
-        output = simple_runtime(compiled_path, ckpt.input,
-                                ckpt.input_type, ckpt.input_file)
+        output, running_time = simple_runtime(compiled_path, ckpt.input,
+                                              ckpt.input_type, ckpt.input_file)
         ckpt_result: Optional[CheckPointResult] = None
 
         # 运行成功

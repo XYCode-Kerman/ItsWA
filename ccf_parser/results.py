@@ -12,6 +12,7 @@ class CheckPointResult(BaseModel):
     score: int
     status: Status
     output: str
+    time: float = 0
 
 
 class JudgingResult(BaseModel):

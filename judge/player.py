@@ -60,7 +60,7 @@ class Player(object):
                 else:
                     # 测试点结果
                     for ckpt in problem.judge_config.checkpoints:
-                        running_result: Union[str, Status] = simple_runtime(
+                        running_result, running_time = simple_runtime(
                             compiled,
                             ckpt.input,
                             ckpt.input_type,
@@ -75,7 +75,8 @@ class Player(object):
                                         ckpt=ckpt,
                                         score=ckpt.ckpt_score,
                                         status=Status.Accepted,
-                                        output=running_result
+                                        output=running_result,
+                                        time=running_time
                                     )
                                 )
                             else:
@@ -84,7 +85,8 @@ class Player(object):
                                         ckpt=ckpt,
                                         score=0,
                                         status=Status.WrongAnswer,
-                                        output=running_result
+                                        output=running_result,
+                                        time=running_time
                                     )
                                 )
                         else:
