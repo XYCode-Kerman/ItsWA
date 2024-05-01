@@ -24,7 +24,7 @@ class SimpleRuntime(object):
 
         executeable_file.chmod(0o700)
 
-    def __call__(self, executeable_file: pathlib.Path, input_content: str, input_type: Literal['STDIN', 'FILE'], file_input_path: pathlib.Path = None, timeout: float = 1.0) -> Tuple[Union[str, Status], float, float]:
+    def __call__(self, executeable_file: pathlib.Path, input_content: str, input_type: Literal['STDIN', 'FILE'], file_input_path: pathlib.Path = None, timeout: float = 1.0, memory_limit: float = 128) -> Tuple[Union[str, Status], float, float]:
         """返回 STDOUT（STDOUT 无输出时返回第一个后缀为 .out 的文件的内容）或Status(运行失败)，运行所用的CPU时间(s)，运行所用的内存（MiB）"""
         if self.calling_precheck(executeable_file, input_content, input_type, file_input_path, timeout) is False:
             return Status.RuntimeError, 0, 0
@@ -71,7 +71,10 @@ class SimpleRuntime(object):
             signal = False  # 释放监测器
 
         if process.returncode != 0:
-            return Status.RuntimeError, 0, max_process_rss
+            return Status.RuntimeError, process_cpu_time.user + process_cpu_time.system, max_process_rss
+
+        if max_process_rss > memory_limit:
+            return Status.MemoryLimitExceeded, process_cpu_time.user + process_cpu_time.system, max_process_rss
 
         # 返回 STDOUT, CPU 时间
         return stdout, process_cpu_time.user + process_cpu_time.system, max_process_rss
