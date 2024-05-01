@@ -60,7 +60,7 @@ class Player(object):
                 else:
                     # 测试点结果
                     for ckpt in problem.judge_config.checkpoints:
-                        running_result, running_time = simple_runtime(
+                        running_result, running_time, running_memory = simple_runtime(
                             compiled,
                             ckpt.input,
                             ckpt.input_type,
@@ -76,7 +76,8 @@ class Player(object):
                                         score=ckpt.ckpt_score,
                                         status=Status.Accepted,
                                         output=running_result,
-                                        time=running_time
+                                        time=running_time,
+                                        memory=running_memory
                                     )
                                 )
                             else:
@@ -86,7 +87,8 @@ class Player(object):
                                         score=0,
                                         status=Status.WrongAnswer,
                                         output=running_result,
-                                        time=running_time
+                                        time=running_time,
+                                        memory=running_memory
                                     )
                                 )
                         else:
@@ -95,7 +97,9 @@ class Player(object):
                                     ckpt=ckpt,
                                     score=0,
                                     status=running_result,
-                                    output=''
+                                    output='',
+                                    time=running_time,
+                                    memory=running_memory
                                 )
                             )
 

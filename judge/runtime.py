@@ -24,22 +24,27 @@ class SimpleRuntime(object):
 
         executeable_file.chmod(0o700)
 
-    def __call__(self, executeable_file: pathlib.Path, input_content: str, input_type: Literal['STDIN', 'FILE'], file_input_path: pathlib.Path = None, timeout: float = 1.0) -> Tuple[Union[str, Status], float]:
-        """返回 STDOUT（STDOUT 无输出时返回第一个后缀为 .out 的文件的内容）"""
+    def __call__(self, executeable_file: pathlib.Path, input_content: str, input_type: Literal['STDIN', 'FILE'], file_input_path: pathlib.Path = None, timeout: float = 1.0) -> Tuple[Union[str, Status], float, float]:
+        """返回 STDOUT（STDOUT 无输出时返回第一个后缀为 .out 的文件的内容）或Status(运行失败)，运行所用的CPU时间(s)，运行所用的内存（MiB）"""
         if self.calling_precheck(executeable_file, input_content, input_type, file_input_path, timeout) is False:
-            return Status.RuntimeError, 0
+            return Status.RuntimeError, 0, 0
 
         # 监测数据
         process_cpu_time: psutil._common.pcputimes = psutil._common.pcputimes(
-            user=-1, system=-1, children_user=-1, children_system=-1)
+            user=-1, system=-1, children_user=-1, children_system=-1)  # 单位s
+        max_process_rss: int = 0  # 单位 MiB
         signal = True
 
         # 监测器
         def _watcher():
-            nonlocal process_cpu_time, signal
+            nonlocal process_cpu_time, signal, max_process_rss
             while signal and psutil_process.is_running():
                 try:
                     process_cpu_time = psutil_process.cpu_times()
+                    rss = psutil_process.memory_full_info().rss / 1048576
+
+                    if rss > max_process_rss:
+                        max_process_rss = rss
                 except psutil.NoSuchProcess:
                     return
 
@@ -61,15 +66,15 @@ class SimpleRuntime(object):
             stdout: str = stdout.decode('utf-8')
             stderr: str = stderr.decode('utf-8')
         except subprocess.TimeoutExpired:
-            return Status.TimeLimitExceeded, process_cpu_time.user + process_cpu_time.system  # 返回 CPU 时间
+            return Status.TimeLimitExceeded, process_cpu_time.user + process_cpu_time.system, max_process_rss  # 返回 CPU 时间
         finally:
             signal = False  # 释放监测器
 
         if process.returncode != 0:
-            return Status.RuntimeError, 0
+            return Status.RuntimeError, 0, max_process_rss
 
         # 返回 STDOUT, CPU 时间
-        return stdout, process_cpu_time.user + process_cpu_time.system
+        return stdout, process_cpu_time.user + process_cpu_time.system, max_process_rss
 
     def stdin_communicate(self, process: subprocess.Popen[bytes], input_content: str, timeout: float):
         return process.communicate(input_content.encode('utf-8'), timeout=timeout)

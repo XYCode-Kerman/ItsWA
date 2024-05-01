@@ -13,6 +13,7 @@ class CheckPointResult(BaseModel):
     status: Status
     output: str
     time: float = 0
+    memory: float = 0
 
 
 class JudgingResult(BaseModel):

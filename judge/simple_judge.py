@@ -32,18 +32,18 @@ def simple_judging(code: str, language: Language, checkpoints: List[CheckPoint])
 
     # 评测
     for ckpt in checkpoints:
-        output, running_time = simple_runtime(compiled_path, ckpt.input,
-                                              ckpt.input_type, ckpt.input_file)
+        output, running_time, running_memory = simple_runtime(compiled_path, ckpt.input,
+                                                              ckpt.input_type, ckpt.input_file)
         ckpt_result: Optional[CheckPointResult] = None
 
         # 运行成功
         if isinstance(output, str):
             if ckpt.compare(output):
                 ckpt_result = CheckPointResult(
-                    ckpt=ckpt, score=ckpt.ckpt_score, status=Status.Accepted, output=output)
+                    ckpt=ckpt, score=ckpt.ckpt_score, status=Status.Accepted, output=output, memory=running_memory, time=running_time)
             else:
                 ckpt_result = CheckPointResult(
-                    ckpt=ckpt, score=0, status=Status.WrongAnswer, output=output)
+                    ckpt=ckpt, score=0, status=Status.WrongAnswer, output=output, memory=running_memory, time=running_time)
         # 运行失败
         else:
             ckpt_result = CheckPointResult(
