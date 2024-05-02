@@ -10,7 +10,7 @@ ItsWA目前任然处于开发状态，多余MLE、OLE和安全防护的支持依
 
 ItsWA的开发路线图托管于[开发路线图 · ItsWA基本功能开发计划（至v1.0） (github.com)](https://github.com/users/XYCode-Kerman/projects/3)，如果您希望我们增加新功能，请提起Issue。
 
-我们预计在**2024年6月1日**发布第一个正式版本。
+我们预计在**2024年8月1日**发布第一个正式版本。
 
 ### 参与开发
 
