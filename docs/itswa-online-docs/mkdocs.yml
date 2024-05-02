@@ -8,6 +8,8 @@ edit_uri: "https://github.com/XYCode-Kerman/ItsWA"
 nav:
   - 简介:
       - Getting Started: index.md
+      - 开发路线图:
+          - 0.0.3版本: intro/roadmaps/0.0.3.md
       - 关于 ItsWA: intro/about-itswa.md
   - 使用:
       - 安装: how-to-use/install.md
@@ -19,6 +21,7 @@ nav:
 
 markdown_extensions:
   - attr_list
+  - footnotes
   - pymdownx.emoji:
       emoji_index: !!python/name:material.extensions.emoji.twemoji
       emoji_generator: !!python/name:material.extensions.emoji.to_svg
