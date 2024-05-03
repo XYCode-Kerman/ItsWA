@@ -205,22 +205,24 @@ class SafetyRuntime(SimpleRuntime):
         return stdout, cputime, memory  # 返回 STDOUT, CPU 时间，内存占用
 
     def stdin_executor(self, executeable_file: pathlib.Path, timeout: float = 1, memory_limit: float = 128) -> subprocess.Popen[bytes]:
+        cmd = ' '.join([
+            'lrun',
+            '--uid', str(configs.LRUN_UID),
+            '--gid', str(configs.LRUN_GID),
+            '--network', 'false',
+            '--max-cpu-time', str(timeout),
+            '--max-real-time', str(timeout * 2),
+            # 单位 MiB -> B
+            '--max-memory', str(memory_limit * 1024 * 1024),
+            '--isolate-process', 'false',
+            '--max-nprocess', '1',
+            '--reset-env', 'true',
+            executeable_file.absolute().__str__(),
+            '3>&2'
+        ])
+
         return subprocess.Popen(
-            ' '.join([
-                'lrun',
-                '--uid', str(configs.LRUN_UID),
-                '--gid', str(configs.LRUN_GID),
-                '--network', 'false',
-                '--max-cpu-time', str(timeout),
-                '--max-real-time', str(timeout * 2),
-                # 单位 MiB -> B
-                '--max-memory', str({memory_limit * 1024 * 1024}),
-                '--isolate-process', 'false',
-                '--max-nprocess', '1',
-                '--reset-env', 'true',
-                executeable_file.absolute().__str__(),
-                '3>&2'
-            ]),
+            cmd,
             cwd=executeable_file.parent,
             stdin=subprocess.PIPE,
             stdout=subprocess.PIPE,
