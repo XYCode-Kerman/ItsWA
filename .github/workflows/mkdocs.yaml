@@ -53,14 +53,14 @@ jobs:
       - name: Build Static Website
         run: |
           poetry install
-          cd docs/itswa-online-docs
+          cd itswa-online-docs
           poetry run mkdocs build
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           # Upload entire repository
-          path: './docs/itswa-online-docs/site/'
+          path: './itswa-online-docs/site/'
 
       - name: Deploy to GitHub Pages
         id: deployment
