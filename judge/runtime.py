@@ -1,6 +1,7 @@
 import os
 import pathlib
 import re
+import shutil
 import subprocess
 import threading
 from typing import Literal, Optional, Tuple, Union, overload
@@ -73,7 +74,7 @@ class SimpleRuntime(object):
                     raise ValueError('使用文件输入输出时，file_input_path 不可为 None')
 
                 stdout, stderr = self.file_communicate(
-                    process, input_content, file_input_path, file_input_path.with_suffix('.out'), timeout=timeout)
+                    process, input_content, executeable_file.parent.joinpath(file_input_path), executeable_file.parent.joinpath(file_input_path).with_suffix('.out'), timeout=timeout)
 
             stdout = stdout.decode('utf-8')
             stderr = stderr.decode('utf-8')
@@ -95,6 +96,7 @@ class SimpleRuntime(object):
         return process.communicate(input_content.encode('utf-8'), timeout=timeout)
 
     def file_communicate(self, process: subprocess.Popen[bytes], input_content: str, file_input_path: pathlib.Path, output_file_path: pathlib.Path, timeout: float | None = None) -> Tuple[bytes, bytes]:
+        """此处的 file_input_path 输入绝对路径"""
         process.wait(timeout=timeout)
 
         return output_file_path.read_bytes() if output_file_path.exists() else b'', process.stderr.read() if process.stderr is not None else b'NO STDERR'
@@ -166,8 +168,15 @@ class SafetyRuntime(SimpleRuntime):
         elif input_type == 'FILE':  # 文件输入输出
             if file_input_path is None:
                 raise ValueError('使用文件输入输出时，file_input_path 不可为 None')
+
+            # 确保目录可读写
+            os.chown(executeable_file.parent.joinpath(file_input_path.parent),
+                     configs.LRUN_UID, configs.LRUN_GID)
+            os.chown(executeable_file.parent.joinpath(file_input_path),
+                     configs.LRUN_UID, configs.LRUN_GID)
+
             output = self.file_communicate(
-                process, input_content, file_input_path, file_input_path.with_suffix('.out'))
+                process, input_content, executeable_file.parent.joinpath(file_input_path), executeable_file.parent.joinpath(file_input_path).with_suffix('.out'))
         else:
             raise ValueError(
                 '不支持的输入类型')  # pragma: no cover  # 由于是内部调用，而且有TypeHint，不可能发生，因此不覆盖该分支。
