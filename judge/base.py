@@ -18,7 +18,7 @@ from utils import judge_logger
 from .player import Player
 
 
-def start_judging(ccf: CCF, multi_process_judging: bool = True, judging_process: int = cpu_count() * 2) -> Generator[List[JudgingResult], Any, Any]:
+def start_judging(ccf: CCF, multi_process_judging: bool = True, judging_process: int = cpu_count() * 2) -> Generator[JudgingResult, Any, Any]:
     start = datetime.datetime.now()
     judging_results: List[JudgingResult] = []
     judge_logger.info(f'开始评测比赛 {ccf.header.name}，当前时间：{start}')
