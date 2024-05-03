@@ -59,7 +59,9 @@ class CPP(Language):
 
         process = subprocess.Popen(
             shlex.join(cmd),
-            shell=True
+            shell=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE
         )
 
         process.wait()
@@ -69,8 +71,8 @@ class CPP(Language):
 
             if process.stdout:
                 # 写入日志
-                source.joinpath('compiler.error.log').write_bytes(
-                    process.stdout)
+                logfile = source.parent.joinpath('compiler.error.log')
+                logfile.write_bytes(process.stdout.read())
 
             return False
         elif not output.exists():
