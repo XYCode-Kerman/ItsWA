@@ -8,7 +8,7 @@ from ccf_parser import CheckPoint, CheckPointResult, JudgingResult
 from ccf_parser.status import Status
 
 from .languages import Language
-from .runtime import simple_runtime
+from .runtime import runtime
 
 
 def simple_judging(code: str, language: Language, checkpoints: List[CheckPoint]) -> Generator[CheckPointResult, None, List[CheckPointResult]]:
@@ -32,8 +32,8 @@ def simple_judging(code: str, language: Language, checkpoints: List[CheckPoint])
 
     # 评测
     for ckpt in checkpoints:
-        output, running_time, running_memory = simple_runtime(compiled_path, ckpt.input,
-                                                              ckpt.input_type, ckpt.input_file)
+        output, running_time, running_memory = runtime(compiled_path, ckpt.input,
+                                                       ckpt.input_type, ckpt.input_file)
         ckpt_result: Optional[CheckPointResult] = None
 
         # 运行成功

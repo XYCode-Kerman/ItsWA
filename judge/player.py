@@ -7,7 +7,7 @@ from ccf_parser.status import Status
 from utils import judge_logger
 
 from .languages import CPP
-from .runtime import simple_runtime
+from .runtime import runtime
 
 
 class Player(object):
@@ -60,7 +60,7 @@ class Player(object):
                 else:
                     # 测试点结果
                     for ckpt in problem.judge_config.checkpoints:
-                        running_result, running_time, running_memory = simple_runtime(
+                        running_result, running_time, running_memory = runtime(
                             compiled,
                             ckpt.input,
                             ckpt.input_type,

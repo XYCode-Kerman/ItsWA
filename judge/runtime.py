@@ -139,6 +139,7 @@ class SafetyRuntime(SimpleRuntime):
             raise RuntimeError('Lrun 不存在')
 
     def __call__(self, executeable_file: pathlib.Path, input_content: str, input_type: Literal['STDIN'] | Literal['FILE'], file_input_path: pathlib.Path | None = None, timeout: float = 1, memory_limit: float = 128) -> Tuple[Union[str, Status], float, float]:
+        """返回 STDOUT（STDOUT 无输出时返回第一个后缀为 .out 的文件的内容）或Status(运行失败)，运行所用的CPU时间(s)，运行所用的内存（MiB）"""
         if self.calling_precheck(executeable_file, input_content, input_type, file_input_path, memory_limit) is False:
             judge_logger.warning(f'{executeable_file} 的评测前预检不通过！')
 
@@ -177,7 +178,8 @@ class SafetyRuntime(SimpleRuntime):
 
         stderr_splited = stderr.split('\n')
 
-        memory = int(match_result(stderr_splited, 'MEMORY'))
+        memory = int(match_result(stderr_splited, 'MEMORY')) / \
+            1048576  # 单位 MiB -> B
         cputime = float(match_result(stderr_splited, 'CPUTIME'))
         realtime = float(match_result(stderr_splited, 'REALTIME'))
         exitcode = int(match_result(stderr_splited, 'EXITCODE'))
@@ -229,5 +231,13 @@ class SafetyRuntime(SimpleRuntime):
         return self.stdin_executor(executeable_file=executeable_file, timeout=timeout, memory_limit=memory_limit)
 
 
-simple_runtime = SimpleRuntime()
-safety_runtime = SafetyRuntime()
+def choose_runtime() -> Union[SimpleRuntime, SafetyRuntime]:  # pragma: no cover
+    print('choose')
+    if os.getuid() == 0 and os.getgid() == 0:  # Root 用户检测
+        return SafetyRuntime()  # 返回 SafetyRuntime 实例
+    else:  # 非 Root 用户检测，返回 SimpleRuntime 实例
+        judge_logger.warning('没有以 Root 用户运行，使用简单运行时(不安全)')
+        return SimpleRuntime()
+
+
+runtime = choose_runtime()

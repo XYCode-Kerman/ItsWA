@@ -1,4 +1,5 @@
 import json
+import os
 import pathlib
 import tempfile
 import uuid
@@ -10,7 +11,14 @@ from ccf_parser import CCF, CheckPoint, JudgingResult
 from ccf_parser.status import Status
 from judge import ReportAnalyze, simple_judging, start_judging
 from judge.languages import CPP, Language
-from judge.runtime import safety_runtime, simple_runtime
+from judge.runtime import SafetyRuntime, SimpleRuntime, runtime
+
+simple_runtime = SimpleRuntime()
+# Root
+if os.getuid() == 0 and os.getgid() == 0:
+    safety_runtime = SafetyRuntime()
+else:
+    safety_runtime = SimpleRuntime()
 
 
 def test_simple_runtime():
