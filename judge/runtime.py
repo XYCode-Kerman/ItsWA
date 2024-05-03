@@ -1,21 +1,28 @@
 import os
 import pathlib
+import re
 import subprocess
 import threading
-from typing import Literal, Tuple, Union
+from typing import Literal, Optional, Tuple, Union, overload
 
 import psutil
 import psutil._common
+from rich.prompt import Prompt
 
+import configs
 from ccf_parser.status import Status
 from utils import judge_logger
+
+
+def match_result(text: list[str], pattern: str) -> str:
+    return [x for x in text if pattern in x][0].replace(pattern, '').strip()
 
 
 class SimpleRuntime(object):
     def __init__(self) -> None:
         pass
 
-    def calling_precheck(self, executeable_file: pathlib.Path, input_content: str, input_type: Literal['STDIN', 'FILE'], file_input_path: pathlib.Path = None, timeout: float = 1.0) -> bool:
+    def calling_precheck(self, executeable_file: pathlib.Path, input_content: str, input_type: Literal['STDIN', 'FILE'], file_input_path: Optional[pathlib.Path] = None, timeout: float = 1.0) -> bool:
         if file_input_path is not None:
             if file_input_path.is_absolute():
                 judge_logger.warning(
@@ -24,7 +31,9 @@ class SimpleRuntime(object):
 
         executeable_file.chmod(0o700)
 
-    def __call__(self, executeable_file: pathlib.Path, input_content: str, input_type: Literal['STDIN', 'FILE'], file_input_path: pathlib.Path = None, timeout: float = 1.0, memory_limit: float = 128) -> Tuple[Union[str, Status], float, float]:
+        return True
+
+    def __call__(self, executeable_file: pathlib.Path, input_content: str, input_type: Literal['STDIN', 'FILE'], file_input_path: Optional[pathlib.Path] = None, timeout: float = 1.0, memory_limit: float = 128) -> Tuple[Union[str, Status], float, float]:
         """返回 STDOUT（STDOUT 无输出时返回第一个后缀为 .out 的文件的内容）或Status(运行失败)，运行所用的CPU时间(s)，运行所用的内存（MiB）"""
         if self.calling_precheck(executeable_file, input_content, input_type, file_input_path, timeout) is False:
             return Status.RuntimeError, 0, 0
@@ -60,11 +69,14 @@ class SimpleRuntime(object):
                 stdout, stderr = self.stdin_communicate(
                     process, input_content, timeout=timeout)
             elif input_type == 'FILE':  # 文件输入
+                if file_input_path is None:
+                    raise ValueError('使用文件输入输出时，file_input_path 不可为 None')
+
                 stdout, stderr = self.file_communicate(
                     process, input_content, file_input_path, file_input_path.with_suffix('.out'), timeout=timeout)
 
-            stdout: str = stdout.decode('utf-8')
-            stderr: str = stderr.decode('utf-8')
+            stdout = stdout.decode('utf-8')
+            stderr = stderr.decode('utf-8')
         except subprocess.TimeoutExpired:
             return Status.TimeLimitExceeded, process_cpu_time.user + process_cpu_time.system, max_process_rss  # 返回 CPU 时间
         finally:
@@ -79,13 +91,13 @@ class SimpleRuntime(object):
         # 返回 STDOUT, CPU 时间
         return stdout, process_cpu_time.user + process_cpu_time.system, max_process_rss
 
-    def stdin_communicate(self, process: subprocess.Popen[bytes], input_content: str, timeout: float):
+    def stdin_communicate(self, process: subprocess.Popen[bytes], input_content: str, timeout: float | None = None):
         return process.communicate(input_content.encode('utf-8'), timeout=timeout)
 
-    def file_communicate(self, process: subprocess.Popen[bytes], input_content: str, file_input_path: pathlib.Path, output_file_path: pathlib.Path, timeout: float) -> Tuple[bytes, bytes]:
+    def file_communicate(self, process: subprocess.Popen[bytes], input_content: str, file_input_path: pathlib.Path, output_file_path: pathlib.Path, timeout: float | None = None) -> Tuple[bytes, bytes]:
         process.wait(timeout=timeout)
 
-        return output_file_path.read_bytes() if output_file_path.exists() else b'', b''
+        return output_file_path.read_bytes() if output_file_path.exists() else b'', process.stderr.read() if process.stderr is not None else b'NO STDERR'
 
     def file_input_executor(self, executeable_file: pathlib.Path, file_input_path: pathlib.Path, input_content: str) -> subprocess.Popen[bytes]:
         executeable_file.parent.joinpath(file_input_path).write_text(
@@ -112,38 +124,110 @@ class SimpleRuntime(object):
         return process
 
 
-# TODO: 暂缓开发安全运行时
-# class SafetyRuntimeWithLrun(SimpleRuntime):
-#     def __init__(self) -> None:
-#         super().__init__()
+class SafetyRuntime(SimpleRuntime):
+    def __init__(self) -> None:
+        super().__init__()
 
-#         if os.getuid() != 0 or os.getgid() != 0:  # pragma: no cover
-#             raise RuntimeError('必须为 Root 用户才能使用 SafetyRuntimeWithLrun。')
+        # Root 用户检测
+        if os.getuid() != 0 or os.getgid() != 0:  # pragma: no cover
+            raise RuntimeError('必须为 Root 用户才能使用 SafetyRuntimeWithLrun。')
 
-#     def __call__(self, executeable_file: pathlib.Path, input_content: str, input_type: Literal['STDIN'] | Literal['FILE'], file_input_path: pathlib.Path = None, timeout: float = 1) -> str | Status:
-#         if self.calling_precheck(executeable_file, input_content, input_type, file_input_path, timeout) is False:
-#             return Status.RuntimeError
+        # Lrun 存在检测
+        output = subprocess.run('lrun', shell=True, stdout=subprocess.PIPE,
+                                stderr=subprocess.PIPE).stderr.decode('utf-8')
+        if not 'Run program with resources limited.' in output:  # pragma: no cover
+            raise RuntimeError('Lrun 不存在')
 
-#         if input_type == 'STDIN':
-#             self.stdin_executor(executeable_file, network=False, timeout=timeout, max_memory=0, uid=0, gid=0)
+    def __call__(self, executeable_file: pathlib.Path, input_content: str, input_type: Literal['STDIN'] | Literal['FILE'], file_input_path: pathlib.Path | None = None, timeout: float = 1, memory_limit: float = 128) -> Tuple[Union[str, Status], float, float]:
+        if self.calling_precheck(executeable_file, input_content, input_type, file_input_path, memory_limit) is False:
+            judge_logger.warning(f'{executeable_file} 的评测前预检不通过！')
 
-#     def stdin_executor(self, executeable_file: pathlib.Path, network: bool, timeout: float, max_memory: int, uid: int, gid: int) -> subprocess.Popen[bytes]:
-#         # 注：max_memory 的单位为byte
+            return Status.RuntimeError, 0, 0
 
-#         process = subprocess.Popen(
-#             [
-#                 'sudo',
-#                 'lrun',
-#                 '--network', 'true' if network else 'false',
-#                 '--max-cpu-time', str(timeout),
-#                 '--max-memory', str(max_memory),
-#                 '--isolate-process', 'true',
-#                 '--uid', str(uid),
-#                 '--gid', str(gid)
-#             ]
-#         )
+        # 修改所有者
+        os.chown(executeable_file, configs.LRUN_UID, configs.LRUN_GID)
+        os.chmod(executeable_file, 0o777)
 
-#         return process
+        # 启动进程
+        if input_type == 'STDIN':
+            process = self.stdin_executor(
+                executeable_file=executeable_file, timeout=timeout, memory_limit=memory_limit)
+        elif input_type == 'FILE':
+            if file_input_path is None:
+                raise ValueError('使用文件输入输出时，file_input_path 不可为 None')
+
+            process = self.file_input_executor(executeable_file=executeable_file, file_input_path=file_input_path,
+                                               input_content=input_content, timeout=timeout, memory_limit=memory_limit)
+
+        # 交互
+        if input_type == 'STDIN':
+            output = self.stdin_communicate(process, input_content)
+        elif input_type == 'FILE':  # 文件输入输出
+            if file_input_path is None:
+                raise ValueError('使用文件输入输出时，file_input_path 不可为 None')
+            output = self.file_communicate(
+                process, input_content, file_input_path, file_input_path.with_suffix('.out'))
+        else:
+            raise ValueError(
+                '不支持的输入类型')  # pragma: no cover  # 由于是内部调用，而且有TypeHint，不可能发生，因此不覆盖该分支。
+
+        # 分析
+        stdout = output[0].decode('utf-8')
+        stderr = output[1].decode('utf-8')
+
+        stderr_splited = stderr.split('\n')
+
+        memory = int(match_result(stderr_splited, 'MEMORY'))
+        cputime = float(match_result(stderr_splited, 'CPUTIME'))
+        realtime = float(match_result(stderr_splited, 'REALTIME'))
+        exitcode = int(match_result(stderr_splited, 'EXITCODE'))
+        exceed: Literal['none', 'CPU_TIME', 'REAL_TIME',
+                        'MEMORY', 'OUTPUT'] | str = match_result(stderr_splited, 'EXCEED')
+
+        if exitcode != 0:
+            return Status.RuntimeError, cputime, memory  # 返回值非0，返回 CPU 时间，内存占用
+
+        if exceed == 'CPU_TIME':
+            return Status.TimeLimitExceeded, cputime, memory  # 超时，返回 CPU 时间，内存占用
+        elif exceed == 'REAL_TIME':
+            return Status.TimeLimitExceeded, cputime, memory  # 超时，返回 CPU 时间，内存占用
+        elif exceed == 'MEMORY':
+            return Status.MemoryLimitExceeded, cputime, memory  # 超内存，返回 CPU 时间，内存占用
+
+        return stdout, cputime, memory  # 返回 STDOUT, CPU 时间，内存占用
+
+    def stdin_executor(self, executeable_file: pathlib.Path, timeout: float = 1, memory_limit: float = 128) -> subprocess.Popen[bytes]:
+        return subprocess.Popen(
+            ' '.join([
+                'lrun',
+                '--uid', str(configs.LRUN_UID),
+                '--gid', str(configs.LRUN_GID),
+                '--network', 'false',
+                '--max-cpu-time', str(timeout),
+                '--max-real-time', str(timeout * 2),
+                # 单位 MiB -> B
+                '--max-memory', str({memory_limit * 1024 * 1024}),
+                '--isolate-process', 'false',
+                '--max-nprocess', '1',
+                '--reset-env', 'true',
+                executeable_file.absolute().__str__(),
+                '3>&2'
+            ]),
+            cwd=executeable_file.parent,
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            bufsize=-1,
+            shell=True
+        )
+
+    def file_input_executor(self, executeable_file: pathlib.Path, file_input_path: pathlib.Path, input_content: str, timeout: float = 1, memory_limit: float = 128) -> subprocess.Popen[bytes]:
+        # 写入输入文件
+        executeable_file.parent.joinpath(file_input_path).write_text(
+            input_content, encoding='utf-8')
+
+        return self.stdin_executor(executeable_file=executeable_file, timeout=timeout, memory_limit=memory_limit)
 
 
 simple_runtime = SimpleRuntime()
+safety_runtime = SafetyRuntime()
