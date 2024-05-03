@@ -232,7 +232,6 @@ class SafetyRuntime(SimpleRuntime):
 
 
 def choose_runtime() -> Union[SimpleRuntime, SafetyRuntime]:  # pragma: no cover
-    print('choose')
     if os.getuid() == 0 and os.getgid() == 0:  # Root 用户检测
         return SafetyRuntime()  # 返回 SafetyRuntime 实例
     else:  # 非 Root 用户检测，返回 SimpleRuntime 实例
