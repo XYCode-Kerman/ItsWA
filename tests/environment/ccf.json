@@ -106,6 +106,29 @@
                         }
                     ]
                 }
+            },
+            {
+                "name": "CE",
+                "description": "不存在源代码文件",
+                "input_format": "测试输入输出格式",
+                "output_format": "测试输入输出格式",
+                "judge_config": {
+                    "source_file_name": "f",
+                    "checkpoints": [
+                        {
+                            "input": "114514",
+                            "answer": "114514 114514",
+                            "input_type": "STDIN",
+                            "output_type": "STDOUT"
+                        },
+                        {
+                            "input": "114514 1919810",
+                            "answer": "114514 1919810 114514 1919810",
+                            "input_type": "STDIN",
+                            "output_type": "STDOUT"
+                        }
+                    ]
+                }
             }
         ]
     }
