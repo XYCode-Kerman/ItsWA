@@ -26,6 +26,20 @@ else:
 def test_simple_runtime():
     for input_type in ['STDIN', 'FILE']:
         assert simple_runtime(
+            pathlib.Path('./tests/environment/executeables_to_test/tle_cpu'),
+            '',
+            input_type,
+            pathlib.Path('a.in')
+        )[0] == Status.TimeLimitExceeded
+
+        assert simple_runtime(
+            pathlib.Path('./tests/environment/executeables_to_test/mle'),
+            '',
+            input_type,
+            pathlib.Path('a.in')
+        )[0] == Status.MemoryLimitExceeded
+
+        assert simple_runtime(
             pathlib.Path('./tests/environment/executeables_to_test/tle'),
             '',
             input_type,
@@ -65,6 +79,20 @@ def test_simple_runtime():
 
 def test_safety_runtime():
     for input_type in ['STDIN', 'FILE']:
+        assert safety_runtime(
+            pathlib.Path('./tests/environment/executeables_to_test/tle_cpu'),
+            '',
+            input_type,
+            pathlib.Path('a.in')
+        )[0] == Status.TimeLimitExceeded
+
+        assert safety_runtime(
+            pathlib.Path('./tests/environment/executeables_to_test/mle'),
+            '',
+            input_type,
+            pathlib.Path('a.in')
+        )[0] == Status.MemoryLimitExceeded
+
         assert safety_runtime(
             pathlib.Path('./tests/environment/executeables_to_test/tle'),
             '',
