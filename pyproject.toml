@@ -37,6 +37,9 @@ httpx = "0.25"
 pytest-xdist = "^3.5.0"
 mkdocs = "^1.5.3"
 mkdocs-material = "^9.5.17"
+mypy = "^1.10.0"
+types-pygments = "^2.17.0.20240310"
+types-psutil = "^5.9.5.20240423"
 
 [build-system]
 requires = ["poetry-core"]
