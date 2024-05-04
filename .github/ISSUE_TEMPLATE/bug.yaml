@@ -1,0 +1,56 @@
+name: "项目 bug"
+description: "指出出现的问题"
+title: "[BUG] "
+labels: ["项目 Bug"]
+
+body:
+  - type: markdown
+    attributes:
+      value: 请填写如下表单以提交一个 bug
+  - type: input
+    id: version
+    attributes:
+      label: 版本号
+      description: 请输入你正在使用的 ItsWA 版本号
+      placeholder: 如果是在某个 commit 上，请填写该 commit 的 hash
+  - type: checkboxes
+    id: confirm
+    attributes:
+      label: 请确认以下选项
+      description: 安全问题请通过邮件向开发团队反馈！
+      options:
+        - label: 我已经查找了Issue，但没有得到答案
+          required: true
+        - label: 我确认这不是一个安全问题
+          required: true
+        - label: 我正在着手修复这个问题
+          required: false
+  - type: textarea
+    id: problem
+    attributes:
+      label: 我遇到了这样的问题
+      description: 配上截图可以更清晰地表述你的问题
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: 我确认这个问题可以这样复现
+    validations:
+      required: false
+  - type: dropdown
+    id: level
+    attributes:
+      label: 问题紧急程度
+      options:
+        - 低
+        - 中
+        - 高
+        - 严重
+    validations:
+      required: true
+  - type: textarea
+    id: effective
+    attributes:
+      label: 项目影响范围
+      description: 请输入该Bug的影响范围，越详细越好
