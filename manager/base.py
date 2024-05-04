@@ -1,10 +1,7 @@
-import atexit
 import pathlib
 import threading
 
 import uvicorn
-
-from utils import manager_logger
 
 from .api import app as api
 

@@ -1,16 +1,10 @@
 import json
-import pathlib
-import tempfile
-import uuid
 from pathlib import Path
 
-import pytest
-
-from ccf_parser import CCF, CheckPoint, JudgingResult
+from ccf_parser import CCF, CheckPoint
 from ccf_parser.status import Status
 from judge import ReportAnalyze, simple_judging, start_judging
-from judge.languages import CPP, Language
-from judge.runtime import runtime
+from judge.languages import CPP
 
 # data = json.load(pathlib.Path('./tests/environment/ccf.json').open())
 # ccf = CCF(**data)
@@ -23,7 +17,7 @@ def test_start_judging(temp_contest: Path):
         results = list(start_judging(ccf, multi_process_judging))
 
         # 分析
-        analyzed = ReportAnalyze(results).generate()
+        ReportAnalyze(results).generate()
 
 
 def test_checkpoint_compare():
@@ -34,15 +28,15 @@ def test_checkpoint_compare():
         output_type='STDOUT'
     )
 
-    assert ckpt.compare('test test') == True
-    assert ckpt.compare(' test test ') == True
-    assert ckpt.compare(' test test \n') == True
-    assert ckpt.compare(' test test \n\n') == True
+    assert ckpt.compare('test test') is True
+    assert ckpt.compare(' test test ') is True
+    assert ckpt.compare(' test test \n') is True
+    assert ckpt.compare(' test test \n\n') is True
 
-    assert ckpt.compare('test2 test') == False
-    assert ckpt.compare(' test2 test ') == False
-    assert ckpt.compare(' test2 test \n') == False
-    assert ckpt.compare(' test2 test \n\n') == False
+    assert ckpt.compare('test2 test') is False
+    assert ckpt.compare(' test2 test ') is False
+    assert ckpt.compare(' test2 test \n') is False
+    assert ckpt.compare(' test2 test \n\n') is False
 
 
 def test_simple_judging():

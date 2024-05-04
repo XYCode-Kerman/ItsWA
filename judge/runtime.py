@@ -1,14 +1,11 @@
 import os
 import pathlib
-import re
-import shutil
 import subprocess
 import threading
-from typing import Literal, Optional, Tuple, Union, overload
+from typing import Literal, Optional, Tuple, Union
 
 import psutil
 import psutil._common
-from rich.prompt import Prompt
 
 import configs
 from ccf_parser.status import Status
@@ -137,7 +134,7 @@ class SafetyRuntime(SimpleRuntime):
         # Lrun 存在检测
         output = subprocess.run('lrun', shell=True, stdout=subprocess.PIPE,
                                 stderr=subprocess.PIPE).stderr.decode('utf-8')
-        if not 'Run program with resources limited.' in output:  # pragma: no cover
+        if 'Run program with resources limited.' not in output:  # pragma: no cover
             raise RuntimeError('Lrun 不存在')
 
     def __call__(self, executeable_file: pathlib.Path, input_content: str, input_type: Literal['STDIN'] | Literal['FILE'], file_input_path: pathlib.Path | None = None, timeout: float = 1, memory_limit: float = 128) -> Tuple[Union[str, Status], float, float]:
@@ -190,7 +187,7 @@ class SafetyRuntime(SimpleRuntime):
         memory = int(match_result(stderr_splited, 'MEMORY')) / \
             1048576  # 单位 MiB -> B
         cputime = float(match_result(stderr_splited, 'CPUTIME'))
-        realtime = float(match_result(stderr_splited, 'REALTIME'))
+        realtime = float(match_result(stderr_splited, 'REALTIME'))  # noqa: F841
         exitcode = int(match_result(stderr_splited, 'EXITCODE'))
         exceed: Literal['none', 'CPU_TIME', 'REAL_TIME',
                         'MEMORY', 'OUTPUT'] | str = match_result(stderr_splited, 'EXCEED')

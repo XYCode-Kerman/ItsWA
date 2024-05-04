@@ -83,8 +83,7 @@ def require_role(roles: List[str] | str = ['default']) -> Callable[[User], User]
 })
 async def user_login(username: Annotated[str, Body()], password: Annotated[str, Body()], response: fastapi.Response):
     User_Query = Query()
-    results = usercol.search(User_Query.username ==
-                             username and User_Query.password == password)
+    results = usercol.search(User_Query.username == username and User_Query.password == password)
 
     if results.__len__() >= 1:
         token = get_token(User.model_validate(results[0]))

@@ -2,12 +2,8 @@ from pathlib import Path
 from typing import *
 
 import typer
-from rich.prompt import Prompt
 
 from ccf_parser import CCF, CCFHeader, Contest
-from utils import manager_logger
-
-from ..common import init_contest
 
 app = typer.Typer(name='contest', help='比赛管理器')
 
@@ -20,7 +16,7 @@ def init_contest_command(
     if autocreate:
         path.mkdir(exist_ok=True, parents=True)
 
-    ccf = CCF(
+    CCF(
         header=CCFHeader(
             name='',
             path=path,

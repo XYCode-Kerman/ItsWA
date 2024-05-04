@@ -3,20 +3,18 @@ import time
 import zipfile
 from pathlib import Path
 from typing import *
-from typing import Optional
 
 import requests
 import typer
 from rich import print
 from rich.console import Console
 from rich.markdown import Markdown
-from rich.panel import Panel
 from rich.progress import track
 
 from online_judge import start_oj_background
 from utils import manager_logger
 
-from ..base import _start_server, start_server_background
+from ..base import start_server_background
 from .contest import app as contest_typer
 from .judge import app as judge_typer
 

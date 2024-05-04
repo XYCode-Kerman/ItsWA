@@ -4,7 +4,7 @@ import tempfile
 from pathlib import Path
 from typing import *
 
-from ccf_parser import CheckPoint, CheckPointResult, JudgingResult
+from ccf_parser import CheckPoint, CheckPointResult
 from ccf_parser.status import Status
 
 from .languages import Language

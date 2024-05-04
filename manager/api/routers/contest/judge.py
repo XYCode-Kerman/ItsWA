@@ -1,10 +1,9 @@
-import json
 import uuid
 from pathlib import Path
 from typing import *
 
 import fastapi
-from fastapi import APIRouter, BackgroundTasks, FastAPI
+from fastapi import APIRouter, BackgroundTasks
 
 import ccf_parser
 import judge

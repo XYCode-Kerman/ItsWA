@@ -1,6 +1,5 @@
 from pathlib import Path
 
-import tinydb
 from tinydb import TinyDB
 
 db_path = Path('./assets/oj_db.json')

@@ -23,7 +23,7 @@ def require_ccf_file(ccf_file: Path) -> Path:
         raise HTTPException(status_code=400, detail="不是一个有效的文件")
 
     try:
-        ccf = CCF.model_validate_json(ccf_file.read_text('utf-8'))
+        CCF.model_validate_json(ccf_file.read_text('utf-8'))
     except pydantic.ValidationError as e:
         raise HTTPException(
             status_code=400, detail=f"CCF 文件格式错误: {e.errors()}")

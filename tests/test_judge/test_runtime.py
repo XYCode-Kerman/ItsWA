@@ -1,18 +1,10 @@
-import json
 import os
 import pathlib
-import tempfile
-import uuid
-from pathlib import Path
-from typing import Optional
 
 import pytest
 
-from ccf_parser import CCF, CheckPoint, JudgingResult
 from ccf_parser.status import Status
-from judge import ReportAnalyze, simple_judging, start_judging
-from judge.languages import CPP, Language
-from judge.runtime import SafetyRuntime, SimpleRuntime, runtime
+from judge.runtime import SafetyRuntime, SimpleRuntime
 from utils.logger import judge_logger
 
 simple_runtime: SimpleRuntime = SimpleRuntime()

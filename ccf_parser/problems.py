@@ -1,6 +1,6 @@
 import decimal
 import pathlib
-from typing import Any, List, Literal, Optional
+from typing import List, Literal, Optional
 
 from pydantic import BaseModel, model_validator
 

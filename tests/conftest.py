@@ -3,7 +3,7 @@ import os
 import shutil
 import tempfile
 from pathlib import Path
-from typing import Generator, List
+from typing import List
 
 import pytest
 from fastapi.testclient import TestClient

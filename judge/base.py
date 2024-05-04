@@ -63,7 +63,7 @@ def start_judging(ccf: CCF, multi_process_judging: bool = True, judging_process:
         # 未完成就一直检测
         with Progress() as progress:
             judging_progress_task = progress.add_task(
-                description=f'评测中...', total=len(tasks))
+                description='评测中...', total=len(tasks))
 
             while tasks.__len__() > 0:
                 for task in tasks:

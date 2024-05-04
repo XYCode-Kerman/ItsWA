@@ -4,7 +4,7 @@ from pydantic import BaseModel, computed_field
 
 from ccf_parser.status import Status
 
-from .problems import CheckPoint, Problem
+from .problems import CheckPoint
 
 
 class CheckPointResult(BaseModel):

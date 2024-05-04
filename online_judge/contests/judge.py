@@ -1,15 +1,12 @@
-import uuid
 from typing import *
 
 import asyncer
-from fastapi import APIRouter, Body, Depends, HTTPException
+from fastapi import APIRouter, Body, Depends
 
 from ccf_parser import CheckPointResult, Problem
 from judge import simple_judging
 from judge.languages import CPP
 
-from ..oj_models import OJProblem
-from ..utils.database import contestscol
 from ..utils.dependencies import require_contest_problem
 
 router = APIRouter(prefix='/judge', tags=['评测'])

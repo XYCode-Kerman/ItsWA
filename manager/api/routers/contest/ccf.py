@@ -1,9 +1,8 @@
-import datetime
 import json
 import pathlib
 
 import pydantic
-from fastapi import APIRouter, HTTPException, Response
+from fastapi import APIRouter, HTTPException
 
 from ccf_parser import CCF
 

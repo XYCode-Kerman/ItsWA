@@ -1,6 +1,5 @@
 import shutil
 from pathlib import Path
-from typing import Dict, List, Union
 
 from ccf_parser import CCF, CheckPointResult, JudgingResult
 from ccf_parser.status import Status

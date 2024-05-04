@@ -1,6 +1,6 @@
 from typing import *
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends
 
 from ..oj_models import OJContest, OJProblem
 from ..utils.dependencies import require_contest_started

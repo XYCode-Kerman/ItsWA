@@ -90,8 +90,7 @@ async def delete_contest(path: pathlib.Path):
     indexes: List[Dict[str, str]] = json.load(
         pathlib.Path('./config/contests.json').open())
 
-    results = [x for x in indexes if x['ccf_file']
-               == path.absolute().__str__()]
+    results = [x for x in indexes if x['ccf_file'] == path.absolute().__str__()]
     if results.__len__() == 0:
         raise HTTPException(status_code=404, detail='比赛目录不存在')
     else:

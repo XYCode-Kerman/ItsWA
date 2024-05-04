@@ -1,14 +1,10 @@
-import json
 import uuid
 from datetime import datetime
 from pathlib import Path
 from typing import *
 
-import fastapi
-from fastapi import APIRouter, Body, Depends, HTTPException
+from fastapi import APIRouter, Body, Depends
 from tinydb import Query
-
-import ccf_parser
 
 from ..auth import require_role
 from ..oj_models import OJContest
@@ -25,7 +21,7 @@ async def get_contests():
 
 @router.post('/', name='在 OJ 中注册一个已存在的比赛', response_model=OJContest, dependencies=[Depends(require_role('admin'))])
 async def register_contest_to_oj(
-        start_time: Annotated[datetime, Body()],
+    start_time: Annotated[datetime, Body()],
     end_time: Annotated[datetime, Body()],
     ccf_file: Path = Depends(require_ccf_file)
 ):
@@ -38,7 +34,7 @@ async def register_contest_to_oj(
 
     doc_id = contestscol.insert(oj_contest.model_dump(mode='json'))
 
-    query = Query()
+    Query()
     return contestscol.get(doc_id=doc_id)
 
 

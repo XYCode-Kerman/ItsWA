@@ -2,12 +2,10 @@ import pathlib
 import tempfile
 from pathlib import Path
 
-import pytest
-
 from ccf_parser import CCF
 from ccf_parser.status import Status
 from judge import start_judging
-from judge.languages import CPP, Language
+from judge.languages import CPP
 
 
 def test_compile(temp_contest: Path):
@@ -21,28 +19,28 @@ def test_compile(temp_contest: Path):
         # pathlib.Path('./tests/environment/players/xycode/a/a.cpp').absolute(),
         temp_contest.joinpath('players/xycode/a/a.cpp').absolute(),
         pathlib.Path(output_path_a).absolute()
-    ) == True
+    ) is True
 
     # 必定失败，语法错误
     assert CPP().compile(
         # pathlib.Path('./tests/environment/players/xycode/b/b.cpp').absolute(),
         temp_contest.joinpath('players/xycode/b/b.cpp').absolute(),
         pathlib.Path(output_path_b).absolute()
-    ) == False
+    ) is False
 
     # 必定失败，源文件不存在
     assert CPP().compile(
         # pathlib.Path('./tests/environment/players/xycode/c/c.cpp').absolute(),
         temp_contest.joinpath('players/xycode/c/c.cpp').absolute(),
         pathlib.Path(output_path_c).absolute()
-    ) == False
+    ) is False
 
     # 必定失败，非法代码
     assert CPP().compile(
         # pathlib.Path('./tests/environment/players/xycode/d/d.cpp').absolute(),
         temp_contest.joinpath('players/xycode/d/d.cpp').absolute(),
         pathlib.Path(output_path_d).absolute()
-    ) == False
+    ) is False
 
 
 def test_illegal_language(ccf: CCF):

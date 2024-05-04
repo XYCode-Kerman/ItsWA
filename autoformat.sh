@@ -1,0 +1,1 @@
+autoflake -i --remove-unused-variables --remove-duplicate-keys --remove-all-unused-imports --ignore-init-module-imports --remove-rhs-for-unused-variables **/*.py

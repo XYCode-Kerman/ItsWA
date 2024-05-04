@@ -4,9 +4,8 @@ import threading
 import dotenv
 import requests
 
-from ccf_parser import CCF
 from configs import TELEMETERING
-from manager import cli_app, start_server_background
+from manager import cli_app
 from telemetering import get_client_id
 
 dotenv.load_dotenv()
@@ -14,7 +13,7 @@ dotenv.load_dotenv()
 
 def telemetering():
     if TELEMETERING:
-        resp = requests.post('http://itte.api.xycode.club/', json={
+        requests.post('http://itte.api.xycode.club/', json={
             'client_id': get_client_id(),
             'event': 'start'
         })
@@ -23,7 +22,7 @@ def telemetering():
 @atexit.register
 def _exit():
     if TELEMETERING:
-        resp = requests.post('http://itte.api.xycode.club/', json={
+        requests.post('http://itte.api.xycode.club/', json={
             'client_id': get_client_id(),
             'event': 'stop'
         })

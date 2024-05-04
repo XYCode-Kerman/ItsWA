@@ -5,13 +5,10 @@ import tempfile
 import time
 import uuid
 from pathlib import Path
-from typing import *
 
-import pytest
 from fastapi.testclient import TestClient
 
-from manager.base import api, start_server_background
-from tests.conftest import temp_contest
+from manager.base import api
 
 client = TestClient(api)
 
@@ -86,7 +83,7 @@ def test_ccf():
     # 成功样例
     ccf = tempcon_dir.joinpath('ccf.json').absolute()
 
-    assert tempcon_dir.joinpath('ccf.json').exists() == True
+    assert tempcon_dir.joinpath('ccf.json').exists() is True
     resp = client.get(f'/contest/ccf?path={ccf.absolute()}')
     assert resp.status_code == 200
     assert resp.json() == json.loads(ccf.read_text(encoding='utf-8'))
@@ -142,7 +139,7 @@ def test_get_contests(api_client):
 
 
 def test_delete_empty_contest(api_client, temp_contest):
-    result = api_client.delete(f'/contest/?path=/tmp/114514')
+    result = api_client.delete('/contest/?path=/tmp/114514')
     assert result.status_code == 404
 
     temp_contest.joinpath('ccf.json').unlink()
@@ -156,11 +153,11 @@ def test_delete_contest(api_client, temp_contest):
 
 
 def test_start_judging(api_client, temp_contest):
-    result = api_client.post(f'/contest/judge/start?contest_path=/tmp/114514')
+    result = api_client.post('/contest/judge/start?contest_path=/tmp/114514')
     assert result.status_code == 404
     assert result.json()['detail'] == '路径不存在'
 
-    result = api_client.post(f'/contest/judge/start?contest_path=/tmp')
+    result = api_client.post('/contest/judge/start?contest_path=/tmp')
     assert result.status_code == 404
     assert result.json()['detail'] == 'ccf.json 文件不存在'
 
@@ -172,7 +169,7 @@ def test_start_judging(api_client, temp_contest):
     # 查询结果
     trackId = result.json()['trackId']
 
-    result = api_client.get(f'/contest/judge/result/error-trackid')
+    result = api_client.get('/contest/judge/result/error-trackid')
     assert result.status_code == 422
 
     result = api_client.get(f'/contest/judge/result/{uuid.uuid4()}')
