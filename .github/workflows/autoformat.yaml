@@ -1,0 +1,37 @@
+name: AutoFormat
+on: [push, pull_request]
+
+jobs:
+  autoformat:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python version
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install poetry
+        uses: abatilo/actions-poetry@v2
+
+      - name: Install the project dependencies
+        run: poetry install
+      
+      - name: Auto format
+        run: bash autoformat.sh
+      
+      - name: Run flake8
+        run: poetry run flake8 .
+      
+      - name: Run mypy
+        run: poetry run mypy .
+      
+      - uses: actions-go/push@master
+        with:
+          commit-message: 'style: 自动格式化代码'
+          remote: origin

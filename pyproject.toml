@@ -44,6 +44,7 @@ types-psutil = "^5.9.5.20240423"
 types-requests = "^2.31.0.20240406"
 flake8 = "^7.0.0"
 autopep8 = "^2.1.0"
+isort = "^5.13.2"
 
 [build-system]
 requires = ["poetry-core"]
