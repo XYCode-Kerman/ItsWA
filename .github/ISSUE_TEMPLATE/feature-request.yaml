@@ -1,0 +1,28 @@
+name: 添加新功能
+description: 申请添加某个新功能
+title: "[功能请求] "
+labels: ["Feature Request / 功能请求", "help wanted / 需要帮助"]
+
+body:
+  - type: markdown
+    attributes:
+      value: 请填写以下表单以发起一个功能请求
+  - type: textarea
+    id: want
+    attributes:
+      label: 你想要什么功能
+    validations:
+      required: true
+  - type: textarea
+    id: solve
+    attributes:
+      label: 我希望能有这样的解决方案
+    validations:
+      required: true
+  - type: checkboxes
+    id: assign
+    attributes:
+      label: Feature 负责人
+      options:
+        - label: 我希望参与对该功能的实现
+        - label: 我允许其他人参与该功能的实现
