@@ -88,7 +88,7 @@ async def user_login(username: Annotated[str, Body()], password: Annotated[str, 
     if results.__len__() >= 1:
         token = get_token(User.model_validate(results[0]))
         response.set_cookie('itswa-oj-apikey', token,
-                            expires=datetime.datetime.now(tz=datetime.UTC) + datetime.timedelta(days=7), httponly=True)
+                            expires=datetime.datetime.utcnow() + datetime.timedelta(days=7), httponly=True)
 
         return {
             'token': token
