@@ -1,7 +1,18 @@
+import decimal
 import pathlib
 from typing import Any, List, Literal, Optional
 
 from pydantic import BaseModel, model_validator
+
+# 比较器
+Comparator = Literal[
+    # 全文比较    全文比较，去除首尾空行（不是每行）
+    'full', 'full_strip',
+    # 逐行比较    逐行比较，去除首尾空格（每行）
+    'line', 'line_strip',
+    # 实数比较，与标准值相差小于10^-3
+    'decimal_3'
+]
 
 
 class CheckPoint(BaseModel):
@@ -16,6 +27,8 @@ class CheckPoint(BaseModel):
     input_file: Optional[pathlib.Path] = None
     # 仅 output_type == FILE 时设置
     output_file: Optional[pathlib.Path] = None
+
+    comparator: Comparator = 'line_strip'
 
     @model_validator(mode='after')
     def check_if_of(self):
@@ -32,7 +45,28 @@ class CheckPoint(BaseModel):
         self.answer = self.answer.replace('\r\n', '\n')
         output = output.replace('\r\n', '\n')
 
-        return self.answer.strip() == output.strip()
+        if self.comparator == 'full':
+            return self.answer == output
+        elif self.comparator == 'full_strip':
+            return self.answer.strip() == output.strip()
+        elif self.comparator == 'line':
+            return self.answer.splitlines() == output.splitlines()
+        elif self.comparator == 'line_strip':
+            temp = [
+                ans.strip() == out.strip()
+                for ans, out in zip(self.answer.splitlines(), output.splitlines())
+            ]
+
+            ret = temp[0]
+            for i in temp:
+                ret &= i
+
+            return ret
+        elif self.comparator == 'decimal_3':
+            try:
+                return (decimal.Decimal(self.answer) - decimal.Decimal(output)).copy_abs() < 10**-3
+            except decimal.InvalidOperation:
+                return False
 
 
 class JudgeConfig(BaseModel):
