@@ -91,6 +91,14 @@ ItsWA无法保证我们的代码中没有安全漏洞，因此请您自行做好
 
 如果您在Review Code过程中发现了任何安全问题，**请勿**擅自将其公开，而应立即将安全问题发送到xycode-xyc@outlook.com以获取我们的技术支持。当您获得我们的允许后，方可公开该问题。
 
+## 关于遥测
+
+为了方便开发，ItsWA会向遥测服务上报一些不涉及隐私的基本信息，该遥测服务的源代码位于[XYCode-Kerman/ItsWA-Telemetering](https://github.com/XYCode-Kerman/ItsWA-Telemetering)。遥测服务只会收集ItsWA的开启、关闭等基本信息，访问[itte.api.xycode.club/docs](http://itte.api.xycode.club/docs)以获取ItsWA遥测服务的帮助（包括自己已有的遥测信息、删除遥测记录等）。
+
+> 尽管ITTE的代码中包含了收集客户端的IP地址的逻辑-，但由于ITTE使用了Service + Ingress进行部署，**因此ITTE实际上收集到的IP地址实际上是集群内部的IP地址**。
+
+**如果您不希望使用遥测服务，请打开`configs.py`并将其中的`TELEMETERING = True`修改为`TELEMETERING = False`。**
+
 ## 许可证
 
 本项目的许可证是 **GPL v3**。
