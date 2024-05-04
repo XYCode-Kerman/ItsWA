@@ -57,8 +57,7 @@ class ReportAnalyze(object):
                                         div(
                                             cls='tooltip',
                                             data_tip='\n'.join([
-                                                f'测试点 {
-                                                    idx + 1}: {x.status.value}'
+                                                f'测试点 {idx + 1}: {x.status.value}'
                                                 for idx, x in enumerate(problem)
                                             ])
                                         )

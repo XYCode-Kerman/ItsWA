@@ -11,8 +11,6 @@ from telemetering import get_client_id
 dotenv.load_dotenv()
 
 
-
-
 def telemetering():
     if TELEMETERING:
         requests.post('http://itte.api.xycode.club/', json={
