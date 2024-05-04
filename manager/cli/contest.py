@@ -25,8 +25,7 @@ def init_contest_command(
             name='',
             path=path,
             description='',
-            contest_type='OI',
-            enable_oj=False
+            contest_type='OI'
         ),
         contest=Contest(
             problems=[],

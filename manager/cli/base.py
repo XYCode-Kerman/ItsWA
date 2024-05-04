@@ -12,7 +12,6 @@ from rich.console import Console
 from rich.markdown import Markdown
 from rich.panel import Panel
 from rich.progress import track
-from rich.text import Text
 
 from online_judge import start_oj_background
 from utils import manager_logger

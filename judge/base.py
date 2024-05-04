@@ -34,6 +34,8 @@ def start_judging(ccf: CCF, multi_process_judging: bool = True, judging_process:
 
         players.append(player)
 
+    result: JudgingResult
+
     # 评测
     if not multi_process_judging:
         for player in players:
@@ -66,7 +68,7 @@ def start_judging(ccf: CCF, multi_process_judging: bool = True, judging_process:
             while tasks.__len__() > 0:
                 for task in tasks:
                     if task.done():
-                        result: JudgingResult = task.result()
+                        result = task.result()
 
                         judge_logger.info(
                             f'选手 {task2player[task].order} 评测完成。')

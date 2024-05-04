@@ -129,7 +129,11 @@ def test_get_contests(api_client):
         "ccf_file": "/tmp/114514"
     }
 
-    data: List[Dict[str, str]] = json.load(contest_path.open())
+    data = json.load(contest_path.open())
+
+    if not isinstance(data, list):
+        raise ValueError("contests.json is not a list")
+
     data.append(fake_contest)
     json.dump(data, contest_path.open(mode='w'), indent=4, ensure_ascii=False)
 

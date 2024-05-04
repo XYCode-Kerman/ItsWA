@@ -30,3 +30,4 @@ class CPPFilter(Filter):
             if re.search(regex_rule, code, re.IGNORECASE) is not None:
                 judge_logger.debug(f'匹配到非法代码，规则 {regex_rule}。')
                 return False
+        return True

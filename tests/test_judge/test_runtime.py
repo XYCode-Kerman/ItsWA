@@ -4,6 +4,7 @@ import pathlib
 import tempfile
 import uuid
 from pathlib import Path
+from typing import Optional
 
 import pytest
 
@@ -14,7 +15,8 @@ from judge.languages import CPP, Language
 from judge.runtime import SafetyRuntime, SimpleRuntime, runtime
 from utils.logger import judge_logger
 
-simple_runtime = SimpleRuntime()
+simple_runtime: SimpleRuntime = SimpleRuntime()
+safety_runtime: SimpleRuntime
 # Root
 if os.getuid() == 0 and os.getgid() == 0:
     safety_runtime = SafetyRuntime()

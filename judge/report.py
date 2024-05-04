@@ -3,8 +3,9 @@ import json
 from pathlib import Path
 from typing import List
 
-import dominate
-from dominate.tags import *
+import dominate  # type: ignore
+from dominate.tags import (div, h1, link, p, script, table,  # type: ignore
+                           tbody, td, th, thead, tr)
 
 from ccf_parser import JudgingResult
 
@@ -58,7 +59,8 @@ class ReportAnalyze(object):
                                         div(
                                             cls='tooltip',
                                             data_tip='\n'.join([
-                                                f'测试点 {idx + 1}: {x.status.value}'
+                                                f'测试点 {
+                                                    idx + 1}: {x.status.value}'
                                                 for idx, x in enumerate(problem)
                                             ])
                                         )

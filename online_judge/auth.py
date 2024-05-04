@@ -36,7 +36,7 @@ def get_apikey_decoded(apikey: Optional[str] = Depends(apikey_schema)) -> Dict[A
 
 def get_user(decoded: Dict[Any, Any] = Depends(get_apikey_decoded)) -> User:
     try:
-        decoded: User = User(**decoded)
+        decoded = User(**decoded).model_dump()
     except pydantic.ValidationError:
         raise HTTPException(status_code=401, detail="API Key无效")
 

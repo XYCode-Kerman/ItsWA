@@ -37,7 +37,7 @@ def temp_contest():
         contest_indexes_file.touch()
         contest_indexes_file.write_text('[]', 'utf-8')
 
-    contest_indexes: List[ContestIndex] = [
+    contest_indexes: List[ContestIndex] = [  # type: ignore
         ContestIndex.model_validate(x)
         for x in json.loads(contest_indexes_file.read_text('utf-8'))
     ]

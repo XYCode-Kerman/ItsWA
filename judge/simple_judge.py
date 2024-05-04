@@ -21,6 +21,7 @@ def simple_judging(code: str, language: Language, checkpoints: List[CheckPoint])
 
     compile_result = language.compile(source_file, compiled_path)
 
+    ckpt_result: Optional[CheckPointResult]
     # 编译失败
     if compile_result is False or compiled_path.exists() is False:
         for ckpt in checkpoints:
@@ -34,7 +35,7 @@ def simple_judging(code: str, language: Language, checkpoints: List[CheckPoint])
     for ckpt in checkpoints:
         output, running_time, running_memory = runtime(compiled_path, ckpt.input,
                                                        ckpt.input_type, ckpt.input_file)
-        ckpt_result: Optional[CheckPointResult] = None
+        ckpt_result = None
 
         # 运行成功
         if isinstance(output, str):

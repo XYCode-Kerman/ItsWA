@@ -26,17 +26,17 @@ class OJContest(BaseModel):
         data = self.ccf_file.read_text('utf-8')
         return CCF.model_validate_json(data)
 
-    @computed_field
+    @computed_field  # type: ignore
     @property
     def name(self) -> str:
         return self.read_ccf.header.name
 
-    @computed_field
+    @computed_field  # type: ignore
     @property
     def description(self) -> str:
         return self.read_ccf.header.description
 
-    @computed_field
+    @computed_field  # type: ignore
     @property
     def problem_count(self) -> int:
         return len(self.read_ccf.contest.problems)
@@ -53,7 +53,7 @@ class OJProblem(BaseModel):
     source_file_name: str
     languages: List[Literal['CPP']] = ['CPP']
 
-    @computed_field
+    @computed_field  # type: ignore
     @property
     def problem_id(self) -> UUID:
         return uuid5(

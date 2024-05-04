@@ -166,6 +166,9 @@ class SafetyRuntime(SimpleRuntime):
         if input_type == 'STDIN':
             output = self.stdin_communicate(process, input_content)
         elif input_type == 'FILE':  # 文件输入输出
+            if file_input_path is None:
+                raise ValueError('使用文件输入输出时，file_input_path 不可为 None')
+
             # 确保目录可读写
             os.chown(executeable_file.parent.joinpath(file_input_path.parent),
                      configs.LRUN_UID, configs.LRUN_GID)

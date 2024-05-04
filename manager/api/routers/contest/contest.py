@@ -23,12 +23,12 @@ def autocreate_contest_file():
 @router.get('/', name='获取比赛列表', response_model=ContestIndexList)
 async def get_contests():
     autocreate_contest_file()
-    data: List[Dict[str, str]] = json.load(
+    data: List[Dict[str, str]] = json.load(  # type: ignore
         pathlib.Path('./config/contests.json').open())
 
     # 将ContestIndex中的 name、desc 与 CCF 同步
     for index, contest_index in enumerate(data):
-        contest_index: ContestIndex = ContestIndex(**contest_index)
+        contest_index = ContestIndex(**contest_index)
 
         if not contest_index.ccf_file.exists():
             del data[index]

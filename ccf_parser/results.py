@@ -20,7 +20,7 @@ class JudgingResult(BaseModel):
     player_order: str
     problems_result: Dict[str, List[CheckPointResult]]  # key: Problem.name
 
-    @computed_field
+    @computed_field  # type: ignore
     @property
     def sum_score(self) -> int:
         score: int = 0
