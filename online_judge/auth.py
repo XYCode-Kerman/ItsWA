@@ -56,7 +56,10 @@ def get_token(user: User) -> str:
     )
 
 
-def require_role(roles: List[str] = ['default']) -> Callable[[User], User]:
+def require_role(roles: List[str] | str = ['default']) -> Callable[[User], User]:
+    if isinstance(roles, str):
+        roles = [roles]
+
     def wrapper(user: User = Depends(get_user)) -> User:
         if user.role not in roles:
             raise HTTPException(status_code=403, detail="不符合权限要求")
