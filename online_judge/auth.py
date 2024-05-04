@@ -41,7 +41,7 @@ def get_user(decoded: Dict[Any, Any] = Depends(get_apikey_decoded)) -> User:
         raise HTTPException(status_code=401, detail="API Key无效")
 
     User_Query = Query()
-    result = usercol.search(User_Query.username == decoded.username)[0]
+    result = usercol.search(User_Query.username == decoded['username'])[0]
 
     return User(**result)
 
