@@ -1,8 +1,9 @@
 <h1 align="center">
   <a href="https://github.com/XYCode-Kerman/ItsWA">
-    <img src="docs/logo.svg" alt="Logo" width="100" height="100">
+    <img src="https://raw.githubusercontent.com/XYCode-Kerman/ItsWA/docs/logo.svg" alt="Logo" width="100" height="100">
   </a>
 </h1>
+
 
 <div align="center">
   ItsWA
@@ -35,7 +36,7 @@ ItsWA是一个基于Python实现的代码评测系统，使用`Lrun`提供安全
 
 |                          ITED的首页                          |                         ITED评测结果                         |
 | :----------------------------------------------------------: | :----------------------------------------------------------: |
-| ![image-20240415134229646](./docs/images/image-20240415134229646.png) | ![image-20240415134359382](./docs/images/image-20240415134359382.png) |
+| ![image-20240415134229646](https://github.com/XYCode-Kerman/ItsWA/blob/docs/images/image-20240415134229646.png?raw=true) | ![image-20240415134359382](https://github.com/XYCode-Kerman/ItsWA/blob/docs/images/image-20240415134359382.png?raw=true) |
 
 ### 技术栈
 
