@@ -13,7 +13,10 @@ from utils import judge_logger
 
 
 def match_result(text: list[str], pattern: str) -> str:
-    return [x for x in text if pattern in x][0].replace(pattern, '').strip()
+    try:
+        return [x for x in text if pattern in x][0].replace(pattern, '').strip()
+    except IndexError:
+        raise ValueError(f'无法在 {text} 中找到 {pattern}，请检查评测日志。')
 
 
 class SimpleRuntime(object):
