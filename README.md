@@ -40,12 +40,13 @@ ItsWA是一个基于Python实现的代码评测系统，使用`Lrun`提供安全
 
 ### 技术栈
 
-* Python
-  * Pydantic
-  * AsyncIO
-  * FastAPI
-* Linux
-  * Lrun（WIP）
+|   操作系统   | ![](https://vtuber-style-logos.vercel.app/_next/image?url=https%3A%2F%2Fraw.githubusercontent.com%2FSAWARATSUKI%2FServiceLogos%2Fmain%2FUbuntu%2FUbuntu.png&w=640&q=75) | ![](https://vtuber-style-logos.vercel.app/_next/image?url=https%3A%2F%2Fraw.githubusercontent.com%2FSAWARATSUKI%2FServiceLogos%2Fmain%2FArchLinux%2FArchLinux.png&w=640&q=75) |
+| :----------: | ------------------------------------------------------------ | :----------------------------------------------------------: |
+| **开发语言** | ![](https://vtuber-style-logos.vercel.app/_next/image?url=https%3A%2F%2Fraw.githubusercontent.com%2FSAWARATSUKI%2FServiceLogos%2Fmain%2FPython%2FPython.png&w=640&q=75) |                             PASS                             |
+| **评测语言** | ![](https://vtuber-style-logos.vercel.app/_next/image?url=https%3A%2F%2Fraw.githubusercontent.com%2FSAWARATSUKI%2FServiceLogos%2Fmain%2FC%252B%252B%2FC%252B%252B.png&w=640&q=75) |                             WIP                              |
+
+> :warning:以上使用到的徽标均遵循CC-BY-NC-SA 4.0协议，引用自[VTuberized Logos](https://vtuber-style-logos.vercel.app/)。
+>
 
 ## 开始
 
